@@ -2,12 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EventPostController;
-use App\Http\Controllers\CommentController;
-use App\Models\Comment;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/comments', function (Request $request) {
+    return Comment::all();
 });
 
 // Route to create a comment
