@@ -7,22 +7,19 @@ use Illuminate\Support\Facades\Schema;
 class CreateCommentsTable extends Migration
 {
     public function up()
-    {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id('comment_id');
-            $table->text('content');
-            $table->integer('likes')->default(0);
-            $table->integer('dislikes')->default(0);
-            $table->timestamp('timestamp')->useCurrent();
-            $table->boolean('is_anonymous')->default(false);
-            // Ensure the parent_comment_id column is unsigned and matches the id column type
-            $table->unsignedBigInteger('parent_comment_id')->nullable();
-            $table->foreign('parent_comment_id')->references('comment_id')->on('comments')
-                ->onDelete('cascade'); // Optional: Set behavior on delete, such as cascading
-            $table->timestamps();
-        });
-    }
-    
+{
+    Schema::create('comments', function (Blueprint $table) {
+        $table->id('comment_id');
+        $table->foreignId('user_id')->nullable()->constrained('users'); // Nullable for anonymous comments
+        $table->text('content');
+        $table->integer('likes')->default(0);
+        $table->integer('dislikes')->default(0);
+        $table->timestamp('timestamp')->useCurrent();
+        $table->boolean('is_anonymous')->default(false);
+        $table->timestamps();
+    });
+}
+
 
     public function down()
     {
