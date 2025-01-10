@@ -15,14 +15,10 @@ class CreateCommentsTable extends Migration
             $table->integer('dislikes')->default(0);
             $table->timestamp('timestamp')->useCurrent();
             $table->boolean('is_anonymous')->default(false);
-            // Ensure the parent_comment_id column is unsigned and matches the id column type
-            $table->unsignedBigInteger('parent_comment_id')->nullable();
-            $table->foreign('parent_comment_id')->references('comment_id')->on('comments')
-                ->onDelete('cascade'); // Optional: Set behavior on delete, such as cascading
+            // Removed parent_comment_id and foreign key constraint
             $table->timestamps();
         });
     }
-    
 
     public function down()
     {

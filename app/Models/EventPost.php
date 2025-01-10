@@ -19,4 +19,3 @@ class EventPost extends Model
         'image_paths' => 'array',
     ];
 }
-

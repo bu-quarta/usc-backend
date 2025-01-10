@@ -11,6 +11,11 @@ class CommentController extends Controller
     // Store a new comment
     public function store(Request $request)
     {
+        // Ensure the user is authenticated
+        if (!Auth::check()) {
+            return response()->json(['message' => 'User not authenticated.'], 401);
+        }
+
         // Validate the request
         $validated = $request->validate([
             'content' => 'required|string|max:1000', // Validate comment content
@@ -23,8 +28,51 @@ class CommentController extends Controller
         $comment->content = $validated['content'];
         $comment->user_id = Auth::id(); // Assuming the user is authenticated
         $comment->comment_id = $validated['comment_id'] ?? null; // If replying, add the parent comment ID
-        $comment->save(); // Save the comment
+        
+        // Save the comment
+        $comment->save();
 
+        // Return response with created comment data
         return response()->json(['message' => 'Comment created successfully!', 'comment' => $comment], 201);
+    }
+
+    // Fetch all comments (optionally, you can include pagination)
+    public function index()
+    {
+        $comments = Comment::all(); // You can add pagination here if needed, like ->paginate(10)
+
+        return response()->json(['comments' => $comments], 200);
+    }
+
+    // Show a specific comment
+    public function show($id)
+    {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found.'], 404);
+        }
+
+        return response()->json(['comment' => $comment], 200);
+    }
+
+    // Delete a comment
+    public function destroy($id)
+    {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found.'], 404);
+        }
+
+        // Check if the user is the owner of the comment
+        if ($comment->user_id !== Auth::id()) {
+            return response()->json(['message' => 'You are not authorized to delete this comment.'], 403);
+        }
+
+        // Delete the comment
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment deleted successfully.'], 200);
     }
 }
