@@ -75,4 +75,36 @@ class CommentController extends Controller
 
         return response()->json(['message' => 'Comment deleted successfully.'], 200);
     }
+
+    // Like a comment
+    public function like($id)
+    {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found.'], 404);
+        }
+
+        // Increment the likes count
+        $comment->likes += 1;
+        $comment->save();
+
+        return response()->json(['message' => 'Comment liked successfully!', 'likes' => $comment->likes], 200);
+    }
+
+    // Dislike a comment
+    public function dislike($id)
+    {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found.'], 404);
+        }
+
+        // Increment the dislikes count
+        $comment->dislikes += 1;
+        $comment->save();
+
+        return response()->json(['message' => 'Comment disliked successfully!', 'dislikes' => $comment->dislikes], 200);
+    }
 }

@@ -10,13 +10,16 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id('comment_id');
-            $table->text('content');
+            $table->unsignedBigInteger('event_post_id'); // Foreign key for event post
+            $table->text('content')->nullable()->change();  // Allow NULL values
             $table->integer('likes')->default(0);
             $table->integer('dislikes')->default(0);
             $table->timestamp('timestamp')->useCurrent();
             $table->boolean('is_anonymous')->default(false);
-            // Removed parent_comment_id and foreign key constraint
             $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('event_post_id')->references('post_id')->on('event_posts')->onDelete('cascade');
         });
     }
 

@@ -12,6 +12,7 @@ class EventPost extends Model
     protected $table = 'event_posts'; // Table name
 
     // Define the fillable fields
+    protected $primaryKey = 'post_id'; // Specify the custom primary key
     protected $fillable = ['header', 'description', 'image_paths', 'status'];
     
     // Cast image_paths to an array from JSON

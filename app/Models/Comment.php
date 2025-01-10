@@ -7,15 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use HasFactory;
+    protected $primaryKey = 'comment_id'; // Specify the custom primary key
+    protected $fillable = ['event_post_id', 'comment', 'user_id'];
 
-    protected $table = 'comments'; // Name of the database table
-
-    protected $fillable = [
-        'content',
-        'likes',
-        'dislikes',
-        'is_anonymous',
-        'user_id',
-    ];
+    public function eventPost()
+    {
+        return $this->belongsTo(EventPost::class);
+    }
 }
