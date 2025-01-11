@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\NewsUpdateController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ReportController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -46,3 +47,12 @@ Route::get('/news-updates', [NewsUpdateController::class, 'index']); // GET meth
 Route::get('/news-updates/{id}', [NewsUpdateController::class, 'show']); // GET method for a specific news update
 
 Route::delete('/news-updates/{id}', [NewsUpdateController::class, 'destroy']);
+
+
+Route::get('/reports', [ReportController::class, 'index']); // List reports (with optional type filter)
+
+Route::post('/reports', [ReportController::class, 'store']); // Create a report
+
+Route::get('/reports/{id}', [ReportController::class, 'show']); // Show a single report
+
+Route::delete('/reports/{id}', [ReportController::class, 'destroy']); // Delete a report
