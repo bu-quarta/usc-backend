@@ -130,4 +130,28 @@ class EventPostController extends Controller
             'comments' => $comments,
         ], 200);
     }
+
+    /**
+ * Delete a specific event post along with its related data.
+ */
+public function destroy($id): JsonResponse
+{
+    $eventPost = EventPost::find($id);
+
+    if (!$eventPost) {
+        return response()->json(['message' => 'Event post not found'], 404);
+    }
+
+    // Delete comments related to the event post
+    Comment::where('event_post_id', $id)->delete();
+
+    // Delete ratings related to the event post
+    Rating::where('event_post_id', $id)->delete();
+
+    // Delete the event post itself
+    $eventPost->delete();
+
+    return response()->json(['message' => 'Event post and its related data deleted successfully'], 200);
+}
+
 }
