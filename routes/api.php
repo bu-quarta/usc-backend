@@ -7,10 +7,14 @@ use App\Models\Rating;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\NewsUpdateController;
+use App\Http\Controllers\Auth\GoogleController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/comments', function (Request $request) {
     return Comment::all();
