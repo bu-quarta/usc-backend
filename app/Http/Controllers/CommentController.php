@@ -19,20 +19,29 @@ class CommentController extends Controller
         // Validate the request
         $validated = $request->validate([
             'content' => 'required|string|max:1000', // Validate comment content
-            'user_id' => 'nullable|exists:users,id', // Validate user ID if provided
-            'comment_id' => 'nullable|exists:comments,id', // Validate the parent comment ID if replying
+            'comment_type' => 'required|string|in:news_update,event_post', // Validate comment type
+            'entity_id' => 'required|integer', // Validate the related entity ID (e.g., news_update_id or event_post_id)
+            'is_anonymous' => 'nullable|boolean',
         ]);
 
-        // Create a new comment
+        // Create a new comment instance
         $comment = new Comment();
         $comment->content = $validated['content'];
-        $comment->user_id = Auth::id(); // Assuming the user is authenticated
-        $comment->comment_id = $validated['comment_id'] ?? null; // If replying, add the parent comment ID
-        
+        $comment->comment_type = $validated['comment_type'];
+        $comment->is_anonymous = $validated['is_anonymous'] ?? false;
+
+        // Link the comment to the appropriate entity based on comment_type
+        if ($validated['comment_type'] === 'news_update') {
+            $comment->news_update_id = $validated['entity_id'];
+        } elseif ($validated['comment_type'] === 'event_post') {
+            $comment->event_post_id = $validated['entity_id'];
+        }
+
+        $comment->user_id = Auth::id(); // Assign the authenticated user
+
         // Save the comment
         $comment->save();
 
-        // Return response with created comment data
         return response()->json(['message' => 'Comment created successfully!', 'comment' => $comment], 201);
     }
 
@@ -77,34 +86,59 @@ class CommentController extends Controller
     }
 
     // Like a comment
-    public function like($id)
-    {
-        $comment = Comment::find($id);
+    // Like a comment
+public function like($id)
+{
+    $comment = Comment::find($id);
 
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found.'], 404);
-        }
-
-        // Increment the likes count
-        $comment->likes += 1;
-        $comment->save();
-
-        return response()->json(['message' => 'Comment liked successfully!', 'likes' => $comment->likes], 200);
+    if (!$comment) {
+        return response()->json(['message' => 'Comment not found.'], 404);
     }
 
-    // Dislike a comment
-    public function dislike($id)
-    {
-        $comment = Comment::find($id);
+    // Increment the likes count
+    $comment->likes += 1;
+    $comment->save();
 
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found.'], 404);
-        }
-
-        // Increment the dislikes count
-        $comment->dislikes += 1;
-        $comment->save();
-
-        return response()->json(['message' => 'Comment disliked successfully!', 'dislikes' => $comment->dislikes], 200);
+    // Determine the parent model (NewsUpdate or EventPost)
+    $parent = null;
+    if ($comment->news_update_id) {
+        $parent = NewsUpdate::find($comment->news_update_id);
+    } elseif ($comment->event_post_id) {
+        $parent = EventPost::find($comment->event_post_id);
     }
+
+    return response()->json([
+        'message' => 'Comment liked successfully!',
+        'likes' => $comment->likes,
+        'parent' => $parent,
+    ], 200);
+}
+
+// Dislike a comment
+public function dislike($id)
+{
+    $comment = Comment::find($id);
+
+    if (!$comment) {
+        return response()->json(['message' => 'Comment not found.'], 404);
+    }
+
+    // Increment the dislikes count
+    $comment->dislikes += 1;
+    $comment->save();
+
+    // Determine the parent model (NewsUpdate or EventPost)
+    $parent = null;
+    if ($comment->news_update_id) {
+        $parent = NewsUpdate::find($comment->news_update_id);
+    } elseif ($comment->event_post_id) {
+        $parent = EventPost::find($comment->event_post_id);
+    }
+
+    return response()->json([
+        'message' => 'Comment disliked successfully!',
+        'dislikes' => $comment->dislikes,
+        'parent' => $parent,
+    ], 200);
+}
 }

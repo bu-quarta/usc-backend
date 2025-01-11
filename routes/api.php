@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Rating;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventPostController;
+use App\Http\Controllers\NewsUpdateController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -29,3 +30,9 @@ Route::get('/event-posts', [EventPostController::class, 'index']);
 Route::post('/event-posts', [EventPostController::class, 'store']);
 
 Route::get('/event-posts/{id}', [EventPostController::class, 'show']);   
+
+Route::post('/news', [NewsUpdateController::class, 'store']); // POST method for storing news update
+
+Route::get('/news', [NewsUpdateController::class, 'index']); // GET method for all news updates
+
+Route::get('/news/{id}', [NewsUpdateController::class, 'show']); // GET method for a specific news update

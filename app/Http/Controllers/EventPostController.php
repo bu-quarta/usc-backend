@@ -46,41 +46,88 @@ class EventPostController extends Controller
      * Show a specific event post, including comments, ratings, and navigation links.
      */
     public function show($id): JsonResponse
-{
-    $eventPost = EventPost::find($id);
+    {
+        $eventPost = EventPost::find($id);
 
-    if (!$eventPost) {
-        return response()->json(['message' => 'Event post not found'], 404);
+        if (!$eventPost) {
+            return response()->json(['message' => 'Event post not found'], 404);
+        }
+
+        // Fetching comments for the specific event post
+        $comments = Comment::where('event_post_id', $id)->get();
+
+        // Fetching ratings only for the specific event post
+        $ratings = Rating::where('event_post_id', $id)->get();
+
+        // Calculating the average rating for the specific event
+        $averageRating = $ratings->avg('rating');
+
+        // Fetching previous and next events based on post_id
+        $previousEvent = EventPost::where('post_id', '<', $id)->orderBy('post_id', 'desc')->first();
+        $nextEvent = EventPost::where('post_id', '>', $id)->orderBy('post_id', 'asc')->first();
+
+        // Fetching other events (not the current one) for recommendations
+        $otherEvents = EventPost::where('post_id', '!=', $id)->limit(5)->get();
+
+        return response()->json([
+            'event_post' => $eventPost,
+            'comments' => $comments,
+            'ratings' => [
+                'all_ratings' => $ratings, // Ratings specific to the event
+                'average_rating' => $averageRating, // Average rating for the specific event
+            ],
+            'navigation' => [
+                'previous_event' => $previousEvent,
+                'next_event' => $nextEvent,
+            ],
+            'other_events' => $otherEvents,
+        ]);
     }
 
-    // Fetching comments for the specific event post
-    $comments = Comment::where('event_post_id', $id)->get();
+    /**
+     * Add a comment to an event post.
+     */
+    public function addComment(Request $request, $eventPostId): JsonResponse
+    {
+        $validated = $request->validate([
+            'content' => 'required|string|max:1000', // Validate comment content
+            'user_id' => 'required|exists:users,id', // Validate user ID
+        ]);
 
-    // Fetching ratings only for the specific event post
-    $ratings = Rating::where('event_post_id', $id)->get();
+        $eventPost = EventPost::find($eventPostId);
 
-    // Calculating the average rating for the specific event
-    $averageRating = $ratings->avg('rating');
+        if (!$eventPost) {
+            return response()->json(['message' => 'Event post not found'], 404);
+        }
 
-    // Fetching previous and next events based on post_id
-    $previousEvent = EventPost::where('post_id', '<', $id)->orderBy('post_id', 'desc')->first();
-    $nextEvent = EventPost::where('post_id', '>', $id)->orderBy('post_id', 'asc')->first();
+        // Create and save the comment
+        $comment = Comment::create([
+            'event_post_id' => $eventPostId,
+            'comment_type' => 'event_post',
+            'content' => $validated['content'],
+            'user_id' => $validated['user_id'],
+        ]);
 
-    // Fetching other events (not the current one) for recommendations
-    $otherEvents = EventPost::where('post_id', '!=', $id)->limit(5)->get();
+        return response()->json([
+            'message' => 'Comment added successfully',
+            'comment' => $comment,
+        ], 201);
+    }
 
-    return response()->json([
-        'event_post' => $eventPost,
-        'comments' => $comments,
-        'ratings' => [
-            'all_ratings' => $ratings, // Ratings specific to the event
-            'average_rating' => $averageRating, // Average rating for the specific event
-        ],
-        'navigation' => [
-            'previous_event' => $previousEvent,
-            'next_event' => $nextEvent,
-        ],
-        'other_events' => $otherEvents,
-    ]);
-}
+    /**
+     * Retrieve comments for a specific event post.
+     */
+    public function getComments($eventPostId): JsonResponse
+    {
+        $comments = Comment::where('event_post_id', $eventPostId)->get();
+
+        if ($comments->isEmpty()) {
+            return response()->json(['message' => 'No comments found for this event post'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Comments retrieved successfully',
+            'comments' => $comments,
+        ], 200);
+    }
 }
