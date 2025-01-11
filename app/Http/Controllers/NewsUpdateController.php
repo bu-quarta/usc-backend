@@ -115,4 +115,25 @@ class NewsUpdateController extends Controller
             'data' => $comment
         ], 201);
     }
+
+    /**
+     * Delete a specific news update along with its related comments.
+     */
+    public function destroy($id)
+    {
+        // Find the news update by ID
+        $newsUpdate = NewsUpdate::find($id);
+
+        if (!$newsUpdate) {
+            return response()->json(['message' => 'News update not found!'], 404);
+        }
+
+        // Delete related comments
+        Comment::where('news_update_id', $id)->delete();
+
+        // Delete the news update itself
+        $newsUpdate->delete();
+
+        return response()->json(['message' => 'News update and its related comments deleted successfully!'], 200);
+    }
 }
