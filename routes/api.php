@@ -23,6 +23,7 @@ Route::post('comments/{id}/like', [CommentController::class, 'like']);
 
 Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
 
+
 // GET route to retrieve event posts
 Route::get('/event-posts', [EventPostController::class, 'index']);
 
@@ -31,8 +32,13 @@ Route::post('/event-posts', [EventPostController::class, 'store']);
 
 Route::get('/event-posts/{id}', [EventPostController::class, 'show']);   
 
-Route::post('/news', [NewsUpdateController::class, 'store']); // POST method for storing news update
+Route::delete('/event-posts/{id}', [EventPostController::class, 'destroy']);
 
-Route::get('/news', [NewsUpdateController::class, 'index']); // GET method for all news updates
 
-Route::get('/news/{id}', [NewsUpdateController::class, 'show']); // GET method for a specific news update
+Route::post('/news-updates', [NewsUpdateController::class, 'store']); // POST method for storing news update
+
+Route::get('/news-updates', [NewsUpdateController::class, 'index']); // GET method for all news updates
+
+Route::get('/news-updates/{id}', [NewsUpdateController::class, 'show']); // GET method for a specific news update
+
+Route::delete('/news-updates/{id}', [NewsUpdateController::class, 'destroy']);
