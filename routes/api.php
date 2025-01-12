@@ -7,16 +7,20 @@ use App\Models\Rating;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\NewsUpdateController;
-use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DocumentController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user();
+
+    return [
+        'name' => $user->name,
+        'email' => $user->email,
+        'avatar' => $user->avatar,
+        'roles' => $user->roles->pluck('name')->toArray(),
+    ];
 });
 
-Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
-Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/comments', function (Request $request) {
     return Comment::all();
@@ -36,7 +40,7 @@ Route::get('/event-posts', [EventPostController::class, 'index']);
 // POST route to create a new event post
 Route::post('/event-posts', [EventPostController::class, 'store']);
 
-Route::get('/event-posts/{id}', [EventPostController::class, 'show']);   
+Route::get('/event-posts/{id}', [EventPostController::class, 'show']);
 
 Route::delete('/event-posts/{id}', [EventPostController::class, 'destroy']);
 

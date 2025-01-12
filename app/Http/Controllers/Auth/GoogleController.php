@@ -11,13 +11,17 @@ class GoogleController extends Controller
 {
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->stateless()->redirect();
+        /** @var \Laravel\Socialite\Two\GoogleProvider  */
+        $driver = Socialite::driver('google');
+        return $driver->stateless()->redirect();
     }
 
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            /** @var \Laravel\Socialite\Two\GoogleProvider  */
+            $driver = Socialite::driver('google');
+            $googleUser = $driver->stateless()->user();
 
             // Find or create user in the database
             $user = User::firstOrCreate(
@@ -26,19 +30,18 @@ class GoogleController extends Controller
                     'name' => $googleUser->getName(),
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
+                    'email_verified_at' => now(),
                 ]
             );
 
-            // Generate token for the user
-            $token = $user->createToken('auth_token')->plainTextToken;
+            Auth::login($user);
 
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'user' => $user,
-            ]);
+            $role = $user->roles->first()->name;
+            if ($role) return redirect()->to(env('FRONTEND_URL') . '/management/' . $role);
+
+            return redirect()->to(env('FRONTEND_URL') . '/');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Unable to authenticate'], 500);
+            return redirect()->to(env('FRONTEND_URL') . '/');
         }
     }
 }
