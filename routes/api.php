@@ -21,7 +21,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     ];
 });
 
-
 Route::get('/comments', function (Request $request) {
     return Comment::all();
 });
@@ -53,15 +52,7 @@ Route::get('/news-updates/{id}', [NewsUpdateController::class, 'show']); // GET 
 
 Route::delete('/news-updates/{id}', [NewsUpdateController::class, 'destroy']);
 
-
-Route::get('/reports', [ReportController::class, 'index']); // List reports (with optional type filter)
-
-Route::post('/reports', [ReportController::class, 'store']); // Create a report
-
-Route::get('/reports/{id}', [ReportController::class, 'show']); // Show a single report
-
-Route::delete('/reports/{id}', [ReportController::class, 'destroy']); // Delete a report
-
+Route::apiResource('reports', ReportController::class);
 
 // List all documents
 Route::get('documents', [DocumentController::class, 'index']);
