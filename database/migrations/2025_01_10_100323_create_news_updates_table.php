@@ -14,10 +14,11 @@ class CreateNewsUpdatesTable extends Migration
     public function up()
     {
         Schema::create('news_updates', function (Blueprint $table) {
-            $table->id('update_id'); // auto-increment primary key
+            $table->id();
             $table->string('title'); // title of the news/update
             $table->text('description'); // content of the news/update
             $table->timestamp('publish_date')->useCurrent(); // publish date (defaults to current timestamp)
+            $table->string('image_path')->nullable(); // path to the image
             $table->enum('status', ['published', 'draft'])->default('draft'); // status of the news/update
             $table->timestamps(); // created_at and updated_at timestamps
         });

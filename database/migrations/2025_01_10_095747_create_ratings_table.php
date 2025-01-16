@@ -9,14 +9,12 @@ class CreateRatingsTable extends Migration
     public function up()
     {
         Schema::create('ratings', function (Blueprint $table) {
-            $table->id('rating_id');
-            $table->unsignedBigInteger('event_post_id'); // Foreign key for event post
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
+            $table->foreignId('event_post_id')->constrained()->onDelete('cascade'); // Foreign key to event_posts table
             $table->unsignedTinyInteger('rating')->comment('Rating from 1 to 5'); // Rating field
             $table->text('comment')->nullable(); // Optional comment for the rating
             $table->timestamps(); // Created_at and Updated_at fields
-
-            // Foreign key constraint
-            $table->foreign('event_post_id')->references('post_id')->on('event_posts')->onDelete('cascade');
         });
     }
 

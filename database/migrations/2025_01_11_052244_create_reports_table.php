@@ -12,7 +12,7 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Report name
-            $table->string('type'); // Type of report (e.g., narrative, liquidation)
+            $table->enum('type', ['narrative', 'accomplishment', 'financial', 'audit', 'other', 'glc'])->default('other'); // Type of report
             $table->string('file_path'); // File path for the uploaded report
             $table->timestamps(); // Created at and updated at timestamps
         });
