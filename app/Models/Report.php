@@ -10,6 +10,9 @@ class Report extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id'; // Specify the custom primary key
-    protected $fillable = ['name', 'type', 'file_path'];
+    protected $fillable = [
+        'name',
+        'type',
+        'file_path'
+    ];
 }

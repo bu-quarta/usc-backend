@@ -9,10 +9,10 @@ class NewsUpdate extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'update_id'; // Specify the custom primary key
     protected $fillable = [
         'title',
         'description',
+        'image_path',
         'status',
     ];
 
