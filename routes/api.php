@@ -43,14 +43,7 @@ Route::get('/event-posts/{id}', [EventPostController::class, 'show']);
 
 Route::delete('/event-posts/{id}', [EventPostController::class, 'destroy']);
 
-
-Route::post('/news-updates', [NewsUpdateController::class, 'store']); // POST method for storing news update
-
-Route::get('/news-updates', [NewsUpdateController::class, 'index']); // GET method for all news updates
-
-Route::get('/news-updates/{id}', [NewsUpdateController::class, 'show']); // GET method for a specific news update
-
-Route::delete('/news-updates/{id}', [NewsUpdateController::class, 'destroy']);
+Route::apiResource('news-updates', NewsUpdateController::class);
 
 Route::apiResource('reports', ReportController::class);
 

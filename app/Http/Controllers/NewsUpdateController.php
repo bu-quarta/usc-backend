@@ -2,138 +2,121 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NewsUpdateResource;
 use App\Models\NewsUpdate;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NewsUpdateController extends Controller
 {
-    // Store a new news update (POST function)
-    public function store(Request $request)
-    {
-        try {
-            // Validate the request with optional fields
-            $validated = $request->validate([
-                'title' => 'nullable|string|max:255', // Title is optional
-                'description' => 'nullable|string', // Description is optional
-                'status' => 'nullable|in:published,draft', // Status is optional
-            ]);
-    
-            // Create and save the news update
-            $newsUpdate = NewsUpdate::create([
-                'title' => $validated['title'] ?? 'Default Title', // Use default value if null
-                'description' => $validated['description'] ?? 'Default Description', // Default value
-                'status' => $validated['status'] ?? 'draft', // Default status
-            ]);
-    
-            // Return a success response
-            return response()->json([
-                'message' => 'News update created successfully!',
-                'data' => $newsUpdate
-            ], 201);
-        } catch (\Exception $e) {
-            // Log the error and return a failure response
-            \Log::error('Error creating news update: ' . $e->getMessage());
-            return response()->json([
-                'message' => 'Failed to create news update.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }    
-
     // Display all news updates (GET function)
     public function index()
     {
-        // Retrieve all published news updates
-        $newsUpdates = NewsUpdate::where('status', 'published')->get();
+        return NewsUpdateResource::collection(
+            NewsUpdate::orderBy('publish_date', 'desc')->get()
+        )->collection;
+    }
 
-        // Return the response
+    // Store a new news update (POST function)
+    public function store(Request $request)
+    {
+        // Validate the request with optional fields
+        $validated = $request->validate([
+            'title' => 'required|string|max:255', // Title is optional
+            'description' => 'required|string', // Description is optional
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image is optional
+            'status' => 'nullable|in:published,draft', // Status is optional
+        ]);
+
+        // Handle the image upload
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = Storage::url($request->file('image')->store('images/news_updates', 'public'));
+        }
+
+        // Create and save the news update
+        NewsUpdate::create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'image_path' => $imagePath,
+            'status' => $validated['status'] ?? 'draft',
+        ]);
+
+        return response()->noContent();
+    }
+
+
+    public function show($id)
+    {
+        // Find the specific news update by ID along with its comments
+        $newsUpdate = NewsUpdate::with('comments')->where('update_id', $id)->first();
+
+        if (!$newsUpdate) {
+            return response()->json([
+                'message' => 'News update not found!',
+            ], 404);
+        }
+
+        // Get the other recent news updates
+        $otherNewsUpdates = NewsUpdate::where('status', 'published')
+            ->where('update_id', '!=', $id) // Exclude the current news update
+            ->latest()
+            ->take(5) // Limit the number of recent news
+            ->get();
+
+        // Format the description for the "Read More" label
+        $descriptionPreview = substr($newsUpdate->description, 0, 100); // Preview the first 100 characters
+
         return response()->json([
-            'message' => 'News updates retrieved successfully!',
-            'data' => $newsUpdates
+            'message' => 'News update retrieved successfully!',
+            'data' => [
+                'newsUpdate' => $newsUpdate,
+                'comments' => $newsUpdate->comments,
+                'otherNewsUpdates' => $otherNewsUpdates
+            ],
         ], 200);
     }
 
-    public function show($id)
-{
-    // Find the specific news update by ID along with its comments
-    $newsUpdate = NewsUpdate::with('comments')->where('update_id', $id)->first();
-
-    if (!$newsUpdate) {
-        return response()->json([
-            'message' => 'News update not found!',
-        ], 404);
-    }
-
-    // Get the other recent news updates
-    $otherNewsUpdates = NewsUpdate::where('status', 'published')
-                                  ->where('update_id', '!=', $id) // Exclude the current news update
-                                  ->latest()
-                                  ->take(5) // Limit the number of recent news
-                                  ->get();
-
-    // Format the description for the "Read More" label
-    $descriptionPreview = substr($newsUpdate->description, 0, 100); // Preview the first 100 characters
-
-    return response()->json([
-        'message' => 'News update retrieved successfully!',
-        'data' => [
-            'newsUpdate' => $newsUpdate,
-            'comments' => $newsUpdate->comments,
-            'otherNewsUpdates' => $otherNewsUpdates
-        ],
-    ], 200);
-}
-
-    // Add a comment to a news update
-    public function addComment(Request $request, $newsUpdateId)
+    public function update(Request $request, NewsUpdate $newsUpdate)
     {
-        // Validate the request
+        // Validate the request with optional fields
         $validated = $request->validate([
-            'content' => 'required|string|max:1000', // Validate the comment content
-            'is_anonymous' => 'nullable|boolean',
+            'title' => 'required|string|max:255', // Title is optional
+            'description' => 'required|string', // Description is optional
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image is optional
+            'status' => 'nullable|in:published,draft', // Status is optional
         ]);
 
-        // Find the news update
-        $newsUpdate = NewsUpdate::find($newsUpdateId);
+        // Handle the image upload
+        $imagePath = null;
 
-        if (!$newsUpdate) {
-            return response()->json(['message' => 'News update not found!'], 404);
+        if ($request->hasFile('image')) {
+            $imagePath = Storage::url($request->file('image')->store('images/news_updates', 'public'));
+        } else {
+            $imagePath = $newsUpdate->image_path;
         }
 
-        // Create and save the comment
-        $comment = new Comment();
-        $comment->content = $validated['content'];
-        $comment->comment_type = 'news_update'; // Define the type
-        $comment->news_update_id = $newsUpdateId; // Link the comment to the news update
-        $comment->is_anonymous = $validated['is_anonymous'] ?? false;
-        $comment->user_id = Auth::id();
-        $comment->save();
+        // Update the news update
+        $newsUpdate->update([
+            'image_path' => $imagePath,
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'status' => $validated['status'] ?? 'draft',
+        ]);
 
-        return response()->json([
-            'message' => 'Comment added successfully!',
-            'data' => $comment
-        ], 201);
+        return response()->noContent();
     }
+
 
     /**
      * Delete a specific news update along with its related comments.
      */
-    public function destroy($id)
+    public function destroy(NewsUpdate $newsUpdate)
     {
-        // Find the news update by ID
-        $newsUpdate = NewsUpdate::find($id);
-
-        if (!$newsUpdate) {
-            return response()->json(['message' => 'News update not found!'], 404);
-        }
-
-        // Delete related comments
-        Comment::where('news_update_id', $id)->delete();
-
-        // Delete the news update itself
         $newsUpdate->delete();
 
-        return response()->json(['message' => 'News update and its related comments deleted successfully!'], 200);
+        return response()->noContent();
     }
 }
