@@ -32,19 +32,8 @@ Route::post('comments/{id}/like', [CommentController::class, 'like']);
 
 Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
 
-
-// GET route to retrieve event posts
-Route::get('/event-posts', [EventPostController::class, 'index']);
-
-// POST route to create a new event post
-Route::post('/event-posts', [EventPostController::class, 'store']);
-
-Route::get('/event-posts/{id}', [EventPostController::class, 'show']);
-
-Route::delete('/event-posts/{id}', [EventPostController::class, 'destroy']);
-
+Route::apiResource('event-posts', EventPostController::class);
 Route::apiResource('news-updates', NewsUpdateController::class);
-
 Route::apiResource('reports', ReportController::class);
 
 // List all documents

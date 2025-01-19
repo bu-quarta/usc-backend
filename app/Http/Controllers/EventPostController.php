@@ -2,44 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EventPostResource;
 use App\Models\EventPost;
 use App\Models\Comment;
 use App\Models\Rating;
+use Carbon\Carbon;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class EventPostController extends Controller
 {
     /**
      * Get all event posts.
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        $eventPosts = EventPost::all();
-
-        return response()->json($eventPosts);
+        return EventPostResource::collection(
+            EventPost::orderBy('created_at', 'desc')->get()
+        )->collection;
     }
 
     /**
      * Store a newly created event post.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
-        $header = $request->input('header', 'Default Event Header');
-        $description = $request->input('description', 'Default Event Description');
-        $status = $request->input('status', 'UPCOMING');
-
-        $eventPost = EventPost::create([
-            'header' => $header,
-            'description' => $description,
-            'image_paths' => $request->input('image_paths', []),
-            'status' => $status,
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_time' => 'required|string',
+            'location' => 'required|string',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        return response()->json([
-            'message' => 'Event post created successfully',
-            'event_post' => $eventPost,
-        ], 201);
+        $date_time = Carbon::parse($validated['date_time'], 'UTC')->setTimezone('Asia/Manila');
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = Storage::url($request->file('image')->store('images/event_posts', 'public'));
+        }
+
+        EventPost::create([
+            'header' => $validated['title'],
+            'description' => $validated['description'],
+            'date_time' => $date_time,
+            'location' => $validated['location'],
+            'image_path' => $imagePath,
+        ]);
+
+        return response()->noContent();
     }
 
     /**
@@ -84,74 +98,41 @@ class EventPostController extends Controller
         ]);
     }
 
-    /**
-     * Add a comment to an event post.
-     */
-    public function addComment(Request $request, $eventPostId): JsonResponse
+    //update
+    public function update(Request $request, EventPost $eventPost)
     {
         $validated = $request->validate([
-            'content' => 'required|string|max:1000', // Validate comment content
-            'user_id' => 'required|exists:users,id', // Validate user ID
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_time' => 'required|string',
+            'location' => 'required|string',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $eventPost = EventPost::find($eventPostId);
+        $date_time = Carbon::parse($validated['date_time'], 'UTC')->setTimeZone('Asia/Manila');
 
-        if (!$eventPost) {
-            return response()->json(['message' => 'Event post not found'], 404);
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = Storage::url($request->file('image')->store('images/event_posts', 'public'));
         }
 
-        // Create and save the comment
-        $comment = Comment::create([
-            'event_post_id' => $eventPostId,
-            'comment_type' => 'event_post',
-            'content' => $validated['content'],
-            'user_id' => $validated['user_id'],
+        $eventPost->update([
+            'header' => $validated['title'],
+            'description' => $validated['description'],
+            'date_time' => $date_time,
+            'location' => $validated['location'],
+            'image_path' => $imagePath ?? $eventPost->image_path,
         ]);
 
-        return response()->json([
-            'message' => 'Comment added successfully',
-            'comment' => $comment,
-        ], 201);
+        return response()->noContent();
     }
-
     /**
-     * Retrieve comments for a specific event post.
+     * Delete a specific event post along with its related data.
      */
-    public function getComments($eventPostId): JsonResponse
+    public function destroy(EventPost $eventPost)
     {
-        $comments = Comment::where('event_post_id', $eventPostId)->get();
-
-        if ($comments->isEmpty()) {
-            return response()->json(['message' => 'No comments found for this event post'], 404);
-        }
-
-        return response()->json([
-            'message' => 'Comments retrieved successfully',
-            'comments' => $comments,
-        ], 200);
+        $eventPost->delete();
+        return response()->noContent();
     }
-
-    /**
- * Delete a specific event post along with its related data.
- */
-public function destroy($id): JsonResponse
-{
-    $eventPost = EventPost::find($id);
-
-    if (!$eventPost) {
-        return response()->json(['message' => 'Event post not found'], 404);
-    }
-
-    // Delete comments related to the event post
-    Comment::where('event_post_id', $id)->delete();
-
-    // Delete ratings related to the event post
-    Rating::where('event_post_id', $id)->delete();
-
-    // Delete the event post itself
-    $eventPost->delete();
-
-    return response()->json(['message' => 'Event post and its related data deleted successfully'], 200);
-}
-
 }

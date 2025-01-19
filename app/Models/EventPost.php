@@ -11,16 +11,17 @@ class EventPost extends Model
 
     protected $table = 'event_posts'; // Table name
 
+    protected $casts = [
+        'date_time' => 'datetime',
+    ];
+
     // Define the fillable fields
     protected $fillable = [
         'header',
         'description',
-        'image_paths',
+        'date_time',
+        'location',
+        'image_path',
         'status'
-    ];
-
-    // Cast image_paths to an array from JSON
-    protected $casts = [
-        'image_paths' => 'array',
     ];
 }

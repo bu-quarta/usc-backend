@@ -15,7 +15,9 @@ class CreateEventPostsTable extends Migration
             $table->id();
             $table->string('header'); // Header of the post
             $table->text('description'); // Description of the post
-            $table->json('image_paths')->nullable(); // JSON field to store image paths
+            $table->dateTime('date_time'); // Date and time field
+            $table->string('location');
+            $table->string('image_path');
             $table->enum('status', ['UPCOMING', 'ONGOING', 'PAST'])->default('UPCOMING'); // Status field with 3 values
             $table->timestamps(); // Created_at and Updated_at fields
         });
