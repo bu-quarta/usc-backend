@@ -88,7 +88,7 @@ class EventPostController extends Controller
         // Fetching other events (not the current one) for recommendations
         $otherEvents = EventPost::where('id', '!=', $eventPost->id)
             ->orderBy('date_time', 'desc')
-            ->limit(5)
+            ->limit(4)
             ->get();
 
         return response()->json([

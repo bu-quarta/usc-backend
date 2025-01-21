@@ -58,7 +58,7 @@ class NewsUpdateController extends Controller
 
         $otherNewsUpdates = NewsUpdate::where('slug', '!=', $slug)
             ->orderBy('publish_date', 'desc')
-            ->limit(5)
+            ->limit(4)
             ->get();
 
         return response()->json([
