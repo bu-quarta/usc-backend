@@ -21,12 +21,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     ];
 });
 
-Route::get('/comments', function (Request $request) {
-    return Comment::all();
-});
-
-// Route to create a comment
-Route::post('/comments', [CommentController::class, 'store']);
+// Route::post('/comments', [CommentController::class, 'store']);
+Route::apiResource('comments', CommentController::class);
 
 Route::post('comments/{id}/like', [CommentController::class, 'like']);
 

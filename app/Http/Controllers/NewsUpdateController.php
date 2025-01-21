@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\NewsUpdateResource;
 use App\Models\NewsUpdate;
 use App\Models\Comment;
@@ -61,8 +62,11 @@ class NewsUpdateController extends Controller
             ->limit(4)
             ->get();
 
+        $comments = Comment::where('news_update_id', $newsUpdate->id)->orderBy('created_at', 'desc')->get();
+
         return response()->json([
             'news_update' => NewsUpdateResource::make($newsUpdate),
+            'comments' => CommentResource::collection($comments),
             'other_news_updates' => NewsUpdateResource::collection($otherNewsUpdates),
         ]);
     }
