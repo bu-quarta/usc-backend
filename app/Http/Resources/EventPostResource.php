@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NewsUpdateResource extends JsonResource
+class EventPostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,15 @@ class NewsUpdateResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'title' => $this->header,
             'slug' => $this->slug,
             'description' => $this->description,
-            'published_date' => $this->created_at->format('F j, Y'),
+            'date_time' => $this->date_time->format('F j, Y | g:i A'),
+            'location' => $this->location,
             'image_url' => $this->image_path,
             'status' => $this->status,
-            'date_time' => $this->created_at->format('F d, Y | h:i A'),
+            'date_posted' => $this->created_at->format('F j, Y'),
+            'date_time_posted' => $this->date_time->format('F j, Y | g:i A'),
         ];
     }
 }

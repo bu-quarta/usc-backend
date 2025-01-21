@@ -21,30 +21,17 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     ];
 });
 
-Route::get('/comments', function (Request $request) {
-    return Comment::all();
-});
-
-// Route to create a comment
-Route::post('/comments', [CommentController::class, 'store']);
+// Route::post('/comments', [CommentController::class, 'store']);
+Route::apiResource('comments', CommentController::class);
 
 Route::post('comments/{id}/like', [CommentController::class, 'like']);
 
 Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
 
-
-// GET route to retrieve event posts
-Route::get('/event-posts', [EventPostController::class, 'index']);
-
-// POST route to create a new event post
-Route::post('/event-posts', [EventPostController::class, 'store']);
-
-Route::get('/event-posts/{id}', [EventPostController::class, 'show']);
-
-Route::delete('/event-posts/{id}', [EventPostController::class, 'destroy']);
-
-Route::apiResource('news-updates', NewsUpdateController::class);
-
+Route::get('event-posts/{slug}', [EventPostController::class, 'show']);
+Route::apiResource('event-posts', EventPostController::class)->except(['show']);
+Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
+Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
 Route::apiResource('reports', ReportController::class);
 
 // List all documents

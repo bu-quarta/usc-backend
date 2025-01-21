@@ -17,8 +17,6 @@ class CreateCommentsTable extends Migration
             $table->text('content')->nullable();  // Allow NULL values
             $table->integer('likes')->default(0);
             $table->integer('dislikes')->default(0);
-            $table->timestamp('timestamp')->useCurrent();
-            $table->boolean('is_anonymous')->default(false);
             $table->timestamps();
         });
     }
