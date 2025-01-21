@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\EventPostResource;
 use App\Models\EventPost;
 use App\Models\Comment;
@@ -91,8 +92,11 @@ class EventPostController extends Controller
             ->limit(4)
             ->get();
 
+        $comments = Comment::where('event_post_id', $eventPost->id)->orderBy('created_at', 'desc')->get();
+
         return response()->json([
             'event_post' => EventPostResource::make($eventPost),
+            'comments' => CommentResource::collection($comments),
             'previous_event' => [
                 'slug' => $previousEvent->slug,
                 'title' => $previousEvent->header,
