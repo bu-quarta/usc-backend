@@ -48,35 +48,23 @@ class NewsUpdateController extends Controller
     }
 
 
-    public function show($id)
+    public function show($slug)
     {
-        // Find the specific news update by ID along with its comments
-        $newsUpdate = NewsUpdate::with('comments')->where('update_id', $id)->first();
+        $newsUpdate = NewsUpdate::where('slug', $slug)->first();
 
         if (!$newsUpdate) {
-            return response()->json([
-                'message' => 'News update not found!',
-            ], 404);
+            return response()->json(['message' => 'News update not found'], 404);
         }
 
-        // Get the other recent news updates
-        $otherNewsUpdates = NewsUpdate::where('status', 'published')
-            ->where('update_id', '!=', $id) // Exclude the current news update
-            ->latest()
-            ->take(5) // Limit the number of recent news
+        $otherNewsUpdates = NewsUpdate::where('slug', '!=', $slug)
+            ->orderBy('publish_date', 'desc')
+            ->limit(5)
             ->get();
 
-        // Format the description for the "Read More" label
-        $descriptionPreview = substr($newsUpdate->description, 0, 100); // Preview the first 100 characters
-
         return response()->json([
-            'message' => 'News update retrieved successfully!',
-            'data' => [
-                'newsUpdate' => $newsUpdate,
-                'comments' => $newsUpdate->comments,
-                'otherNewsUpdates' => $otherNewsUpdates
-            ],
-        ], 200);
+            'news_update' => NewsUpdateResource::make($newsUpdate),
+            'other_news_updates' => NewsUpdateResource::collection($otherNewsUpdates),
+        ]);
     }
 
     public function update(Request $request, NewsUpdate $newsUpdate)

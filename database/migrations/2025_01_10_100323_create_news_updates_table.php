@@ -16,6 +16,7 @@ class CreateNewsUpdatesTable extends Migration
         Schema::create('news_updates', function (Blueprint $table) {
             $table->id();
             $table->string('title'); // title of the news/update
+            $table->string('slug')->unique(); // slug for the news-update
             $table->text('description'); // content of the news/update
             $table->timestamp('publish_date')->useCurrent(); // publish date (defaults to current timestamp)
             $table->string('image_path')->nullable(); // path to the image

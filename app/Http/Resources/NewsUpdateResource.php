@@ -17,6 +17,7 @@ class NewsUpdateResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'description' => $this->description,
             'published_date' => $this->created_at->format('F j, Y'),
             'image_url' => $this->image_path,
