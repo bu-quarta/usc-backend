@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class EventPost extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $table = 'event_posts'; // Table name
 
@@ -24,4 +26,11 @@ class EventPost extends Model
         'image_path',
         'status'
     ];
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('header')
+            ->saveSlugsTo('slug');
+    }
 }

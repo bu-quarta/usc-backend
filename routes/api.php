@@ -32,7 +32,8 @@ Route::post('comments/{id}/like', [CommentController::class, 'like']);
 
 Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
 
-Route::apiResource('event-posts', EventPostController::class);
+Route::get('event-posts/{slug}', [EventPostController::class, 'show']);
+Route::apiResource('event-posts', EventPostController::class)->except(['show']);
 Route::apiResource('news-updates', NewsUpdateController::class);
 Route::apiResource('reports', ReportController::class);
 

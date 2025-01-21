@@ -14,6 +14,7 @@ class CreateEventPostsTable extends Migration
         Schema::create('event_posts', function (Blueprint $table) {
             $table->id();
             $table->string('header'); // Header of the post
+            $table->string('slug')->unique(); // Slug field
             $table->text('description'); // Description of the post
             $table->dateTime('date_time'); // Date and time field
             $table->string('location');
