@@ -15,7 +15,9 @@ class CreateOfficialsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('position');
-            $table->string('email')->unique();
+            $table->string('college')->nullable();
+            $table->string('course')->nullable();
+            $table->string('email')->nullable();
             $table->foreignId('directory_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
