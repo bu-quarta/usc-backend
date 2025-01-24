@@ -71,12 +71,12 @@ class UscOfficialSeeder extends Seeder
                 'image_url' => '/storage/images/usc-2024-2025/delos-santos.JPG',
             ],
             [
-                'name' => 'ARIANNA KESI',
+                'name' => 'ARIANNA KESI A. DIGO',
                 'position' => 'Auditor',
                 'college' => 'College of Business, Economics, and Management',
                 'email' => 'ariannakesiarmero.digo@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/kesi.jpg',
+                'image_url' => '/storage/images/usc-2024-2025/digo.jpg',
             ],
             [
                 'name' => 'IZEL B. MANATA',
