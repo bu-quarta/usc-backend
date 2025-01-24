@@ -11,6 +11,7 @@ use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\NewsUpdateController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UscAdviserController;
 use App\Http\Controllers\UscOfficialController;
@@ -47,6 +48,7 @@ Route::apiResource('event-posts', EventPostController::class)->only(['index']);
 Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
 Route::apiResource('news-updates', NewsUpdateController::class)->only(['index']);
 Route::apiResource('reports', ReportController::class)->only(['index']);
+Route::get('faqs', [FaqController::class, 'index']);
 
 Route::middleware(['auth', 'role:pio'])->group(function () {
     Route::prefix('pio')->group(function () {
