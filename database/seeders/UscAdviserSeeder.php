@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\UscAdviser;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class UscAdviserSeeder extends Seeder
 {
@@ -13,40 +13,32 @@ class UscAdviserSeeder extends Seeder
      */
     public function run(): void
     {
-        $now = Carbon::now(); // Get the current timestamp
-        
-        $advisers = [
-            [
-                'name' => 'DR. OFELIA SAMAR-SY',
-                'position' => 'Junior Adviser',
-                'email' => 'buexample1@gmail.com', // Add email if available
-                'directory_id' => 2,
-                'start_year' => 2024,
-                'end_year' => 2025,
-                'created_at' => $now, 'updated_at' => $now
-            ],
+        $usc_advisers = [
             [
                 'name' => 'ENGR. HANA MYKA GATON-DULAY',
-                'position' => 'Senior Adviser',
-                'email' => 'buexample2@gmail.com', // Add email if available
-                'directory_id' => 2,
-                'start_year' => 2024,
-                'end_year' => 2025,
-                'created_at' => $now, 'updated_at' => $now
+                'position' => 'Faculty, College of Engineering',
+                'type' => 'Senior Adviser',
+                'year_range' => '2024-2025',
+                'image_url' => '/storage/images/usc-advisers-2024-2025/dulay.jpg',
             ],
             [
-                'name' => 'JAZZLYN IMPERIAL',
-                'position' => 'Junior Adviser',
-                'email' => 'buexample3@gmail.com', // Add email if available
-                'directory_id' => 2,
-                'start_year' => 2024,
-                'end_year' => 2025,
-                'created_at' => $now, 'updated_at' => $now
+                'name' => 'DR. OFELIA SAMAR-SY',
+                'position' => 'Dean, College of Medicine',
+                'type' => 'Junior Adviser',
+                'year_range' => '2024-2025',
+                'image_url' => '/storage/images/usc-advisers-2024-2025/samar-sy.jpg',
             ],
+            [
+                'name' => 'PROF. JAZZLYN IMPERIAL',
+                'position' => 'Faculty, College of Science',
+                'type' => 'Junior Adviser',
+                'year_range' => '2024-2025',
+                'image_url' => '/storage/images/usc-advisers-2024-2025/imperial.jpg',
+            ]
         ];
 
-        foreach ($advisers as $adviser) {
-            \DB::table('officials')->insert($adviser);
+        foreach ($usc_advisers as $usc_adviser) {
+            UscAdviser::create($usc_adviser);
         }
     }
 }

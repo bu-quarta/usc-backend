@@ -5,10 +5,16 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Comment;
 use App\Models\Rating;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CscDirectoryController;
+use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\NewsUpdateController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UscAdviserController;
+use App\Http\Controllers\UscOfficialController;
+use App\Http\Controllers\UscPresidentsController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     $user = $request->user();
@@ -20,6 +26,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
         'roles' => $user->roles->pluck('name')->toArray(),
     ];
 });
+
+Route::get('home', [HomeController::class, 'index']);
+Route::get('cscs', [CscDirectoryController::class . 'index']);
+Route::get('cscs/{slug}', [CscDirectoryController::class, 'show']);
+Route::get('developers', [DeveloperController::class, 'index']);
+Route::get('usc-presidents', [UscPresidentsController::class, 'index']);
+Route::get('usc-officials', [UscOfficialController::class, 'index']);
+Route::get('usc-advisers', [UscAdviserController::class, 'index']);
 
 // Route::post('/comments', [CommentController::class, 'store']);
 Route::apiResource('comments', CommentController::class);
