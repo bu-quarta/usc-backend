@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('home', [HomeController::class, 'index']);
-Route::get('cscs', [CscDirectoryController::class . 'index']);
+Route::get('cscs', [CscDirectoryController::class, 'index']);
 Route::get('cscs/{slug}', [CscDirectoryController::class, 'show']);
 Route::get('developers', [DeveloperController::class, 'index']);
 Route::get('usc-presidents', [UscPresidentsController::class, 'index']);
