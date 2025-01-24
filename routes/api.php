@@ -43,10 +43,20 @@ Route::post('comments/{id}/like', [CommentController::class, 'like']);
 Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
 
 Route::get('event-posts/{slug}', [EventPostController::class, 'show']);
-Route::apiResource('event-posts', EventPostController::class)->except(['show']);
+Route::apiResource('event-posts', EventPostController::class)->only(['index']);
 Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
-Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
-Route::apiResource('reports', ReportController::class);
+Route::apiResource('news-updates', NewsUpdateController::class)->only(['index']);
+Route::apiResource('reports', ReportController::class)->only(['index']);
+
+Route::middleware(['auth', 'role:pio'])->group(function () {
+    Route::prefix('pio')->group(function () {
+        Route::get('event-posts/{slug}', [EventPostController::class, 'show']);
+        Route::apiResource('event-posts', EventPostController::class)->except(['show']);
+        Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
+        Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
+        Route::apiResource('reports', ReportController::class);
+    });
+});
 
 // List all documents
 Route::get('documents', [DocumentController::class, 'index']);
