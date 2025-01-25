@@ -18,7 +18,7 @@ class DeveloperSeeder extends Seeder
                 'name' => 'HAZEL ANNE B. MARQUESES',
                 'position' => 'Project Manager',
                 'college' => 'BS Information Technology, BUCS',
-                'image_url' => '/storage/images/developers/marqueses.jpg',
+                'image_url' => '/storage/images/developers/marqueses.png',
             ],
             [
                 'name' => 'TRINA CHARIZ B. HIBO',
