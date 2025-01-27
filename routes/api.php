@@ -35,13 +35,7 @@ Route::get('developers', [DeveloperController::class, 'index']);
 Route::get('usc-presidents', [UscPresidentsController::class, 'index']);
 Route::get('usc-officials', [UscOfficialController::class, 'index']);
 Route::get('usc-advisers', [UscAdviserController::class, 'index']);
-
-// Route::post('/comments', [CommentController::class, 'store']);
-Route::apiResource('comments', CommentController::class);
-
-Route::post('comments/{id}/like', [CommentController::class, 'like']);
-
-Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
+Route::get('comments', [CommentController::class, 'index']);
 
 Route::get('event-posts/{slug}', [EventPostController::class, 'show']);
 Route::apiResource('event-posts', EventPostController::class)->only(['index']);
@@ -49,6 +43,17 @@ Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
 Route::apiResource('news-updates', NewsUpdateController::class)->only(['index']);
 Route::apiResource('reports', ReportController::class)->only(['index']);
 Route::get('faqs', [FaqController::class, 'index']);
+
+Route::apiResource('event-posts', EventPostController::class)->except(['show']);
+Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('comments', [CommentController::class, 'store']);
+    Route::post('comments/{id}/like', [CommentController::class, 'like']);
+    Route::post('comments/{id}/dislike', [CommentController::class, 'dislike']);
+    Route::post('comments/{id}/unlike', [CommentController::class, 'undoLike']);
+    Route::post('comments/{id}/undislike', [CommentController::class, 'undoDislike']);
+});
 
 Route::middleware(['auth', 'role:pio'])->group(function () {
     Route::prefix('pio')->group(function () {

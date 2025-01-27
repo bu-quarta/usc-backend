@@ -11,8 +11,6 @@ class Comment extends Model
         'event_post_id',
         'news_update_id',
         'content',
-        'likes',
-        'dislikes',
         'user_id'
     ];
 
@@ -25,5 +23,20 @@ class Comment extends Model
     public function newsUpdate()
     {
         return $this->belongsTo(NewsUpdate::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function dislikes()
+    {
+        return $this->hasMany(Dislike::class);
     }
 }

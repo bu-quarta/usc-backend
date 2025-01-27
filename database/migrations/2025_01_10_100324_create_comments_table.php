@@ -15,8 +15,6 @@ class CreateCommentsTable extends Migration
             $table->foreignId('news_update_id')->nullable()->constrained()->onDelete('cascade');
             $table->enum('comment_type', ['news_update', 'event_post']); // Type of comment
             $table->text('content')->nullable();  // Allow NULL values
-            $table->integer('likes')->default(0);
-            $table->integer('dislikes')->default(0);
             $table->timestamps();
         });
     }

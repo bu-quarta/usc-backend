@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Models\Dislike;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -13,7 +16,9 @@ class CommentController extends Controller
     public function index()
     {
         return CommentResource::collection(
-            Comment::orderBy('created_at', 'desc')->get()
+            Comment::with(['user', 'likes', 'dislikes'])
+                ->latest()
+                ->get()
         )->collection;
     }
 
@@ -52,56 +57,76 @@ class CommentController extends Controller
     // Like a comment
     public function like($id)
     {
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
 
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found.'], 404);
-        }
+        // Undo any active dislike
+        Dislike::where('user_id', Auth::id())
+            ->where(
+                'comment_id',
+                $comment->id
+            )
+            ->where('is_active', true)
+            ->update(['is_active' => false]);
 
-        // Increment the likes count
-        $comment->likes += 1;
-        $comment->save();
+        // Add or update the like
+        Like::updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'comment_id' => $comment->id
+            ],
+            ['is_active' => true]
+        );
 
-        // Determine the parent model (NewsUpdate or EventPost)
-        $parent = null;
-        if ($comment->news_update_id) {
-            $parent = NewsUpdate::find($comment->news_update_id);
-        } elseif ($comment->event_post_id) {
-            $parent = EventPost::find($comment->event_post_id);
-        }
-
-        return response()->json([
-            'message' => 'Comment liked successfully!',
-            'likes' => $comment->likes,
-            'parent' => $parent,
-        ], 200);
+        return response()->noContent();
     }
 
     // Dislike a comment
     public function dislike($id)
     {
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
 
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found.'], 404);
+        // Undo any active like
+        Like::where('user_id', Auth::id())
+            ->where('comment_id', $comment->id)
+            ->where('is_active', true)
+            ->update(['is_active' => false]);
+
+        // Add or update the dislike
+        Dislike::updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'comment_id' => $comment->id
+            ],
+            ['is_active' => true]
+        );
+
+        return response()->noContent();
+    }
+
+
+    public function undoLike($id)
+    {
+        $comment = Comment::findOrfail($id);
+
+        $like = Like::where('user_id', Auth::id())->where('comment_id', $comment->id)->first();
+        if ($like) {
+            $like->update(['is_active' => false]);
+            return response()->json(['message' => 'Like undone!']);
         }
 
-        // Increment the dislikes count
-        $comment->dislikes += 1;
-        $comment->save();
+        return response()->noContent();
+    }
 
-        // Determine the parent model (NewsUpdate or EventPost)
-        $parent = null;
-        if ($comment->news_update_id) {
-            $parent = NewsUpdate::find($comment->news_update_id);
-        } elseif ($comment->event_post_id) {
-            $parent = EventPost::find($comment->event_post_id);
+    public function undoDislike($id)
+    {
+        $comment = Comment::findOrfail($id);
+
+        $dislike = Dislike::where('user_id', Auth::id())->where('comment_id', $comment->id)->first();
+        if ($dislike) {
+            $dislike->update(['is_active' => false]);
+            return response()->json(['message' => 'Dislike undone!']);
         }
 
-        return response()->json([
-            'message' => 'Comment disliked successfully!',
-            'dislikes' => $comment->dislikes,
-            'parent' => $parent,
-        ], 200);
+        return response()->noContent();
     }
 }
