@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UscAdviserSeeder::class);
         $this->call(DeveloperSeeder::class);
         $this->call(FaqSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }
