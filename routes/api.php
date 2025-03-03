@@ -16,6 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UscAdviserController;
 use App\Http\Controllers\UscOfficialController;
 use App\Http\Controllers\UscPresidentsController;
+use App\Http\Controllers\UserController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     $user = $request->user();
@@ -79,3 +80,17 @@ Route::put('documents/{id}/status', [DocumentController::class, 'update']);
 
 // Delete a document
 Route::delete('documents/{id}', [DocumentController::class, 'destroy']);
+
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::get('/users', [UserController::class, 'index']);
+//     Route::get('/users/{id}', [UserController::class, 'show']);
+//     Route::post('/users', [UserController::class, 'store']);
+//     Route::put('/users/{id}', [UserController::class, 'update']);
+//     Route::delete('/users/{id}', [UserController::class, 'destroy']);
+// });
+
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::post('/users', [UserController::class, 'store']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
