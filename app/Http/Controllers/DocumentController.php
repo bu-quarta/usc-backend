@@ -41,11 +41,18 @@ class DocumentController extends Controller
         return response()->json($document, 201);
     }
 
-    // Show a specific document with its status history
-    public function show($id)
+    // Show a specific document with its status history using document_format
+    public function show(Request $request)
     {
         try {
-            $document = Document::with('statuses')->findOrFail($id);
+            // Validate the request input
+            $validated = $request->validate([
+                'document_format' => 'required|string|exists:documents,document_format'
+            ]);
+
+            // Find the document using document_format
+            $document = Document::with('statuses')->where('document_format', $validated['document_format'])->firstOrFail();
+
             return response()->json($document);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Document not found'], 404);
