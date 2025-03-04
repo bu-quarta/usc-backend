@@ -16,6 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UscAdviserController;
 use App\Http\Controllers\UscOfficialController;
 use App\Http\Controllers\UscPresidentsController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\JudicialController;
 
@@ -90,3 +91,13 @@ Route::post('activity-log', [ActivityLogController::class, 'store']);
 Route::get('activity-log/public-relations', [ActivityLogController::class, 'publicRelations']);
 Route::get('activity-log/audit-reports', [ActivityLogController::class, 'auditReports']);
 Route::get('activity-log/file-tracking', [ActivityLogController::class, 'fileTracking']);
+
+// Auditor routes
+// Route::middleware(['auth', 'role:auditor'])->group(function () {
+//     Route::resource('evaluations', EvaluationController::class);
+//     Route::post('evaluations/search', [EvaluationController::class, 'search']);
+// });
+
+//No auth for testing only
+Route::resource('evaluations', EvaluationController::class);
+Route::post('evaluations/search', [EvaluationController::class, 'search']);
