@@ -94,8 +94,14 @@ Route::get('activity-log/file-tracking', [ActivityLogController::class, 'fileTra
 
 // Auditor routes
 // Route::middleware(['auth', 'role:auditor'])->group(function () {
-//     Route::resource('evaluations', EvaluationController::class);
-//     Route::post('evaluations/search', [EvaluationController::class, 'search']);
+//     Route::prefix('evaluations')->group(function () {
+//         Route::get('/', [EvaluationController::class, 'index']); // Get all evaluations
+//         Route::post('/', [EvaluationController::class, 'store']); // Create a new evaluation
+//         Route::get('/{evaluation}', [EvaluationController::class, 'show']); // Get a specific evaluation
+//         Route::put('/{evaluation}', [EvaluationController::class, 'update']); // Update an evaluation
+//         Route::delete('/{evaluation}', [EvaluationController::class, 'destroy']); // Delete an evaluation
+//         Route::post('/search', [EvaluationController::class, 'search']); // Search evaluations by event title
+//     });
 // });
 
 //No auth for testing only

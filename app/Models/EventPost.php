@@ -33,4 +33,9 @@ class EventPost extends Model
             ->generateSlugsFrom('header')
             ->saveSlugsTo('slug');
     }
+
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class, 'event_id', 'id');
+    }
 }

@@ -9,5 +9,10 @@ class Evaluation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['image', 'title', 'evaluation_form', 'status'];
+    protected $fillable = ['event_id', 'evaluation_form'];
+
+    public function event()
+    {
+        return $this->belongsTo(EventPost::class, 'event_id');
+    }
 }

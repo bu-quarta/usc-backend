@@ -9,11 +9,11 @@ return new class extends Migration {
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('title');
-            $table->string('status');
+            $table->unsignedBigInteger('event_id');
             $table->string('evaluation_form');
             $table->timestamps();
+            
+            $table->foreign('event_id')->references('id')->on('event_posts')->onDelete('cascade');
         });
     }
 
