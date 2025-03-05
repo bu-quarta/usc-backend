@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DocumentResource;
 use App\Models\Document;
 use App\Models\DocumentStatus;
 use Illuminate\Http\Request;
@@ -13,10 +14,10 @@ class DocumentController extends Controller
     public function index()
     {
         $documents = Document::with(['statuses' => function ($query) {
-            $query->latest()->first(); // Fetch only the latest status
+            $query->orderByDesc('updated_at')->limit(1); // Fetch only the latest status
         }])->get();
 
-        return response()->json($documents);
+        return response()->json(DocumentResource::collection($documents));
     }
 
     // Store a new document and set initial status
@@ -37,15 +38,28 @@ class DocumentController extends Controller
             'document_id' => $document->id,
             'status' => 'PENDING',
         ]);
-
-        return response()->json($document, 201);
     }
 
-    // Show a specific document with its status history
-    public function show($id)
+    // Show a specific document with its status history using document_format
+    public function show(Request $request)
     {
         try {
-            $document = Document::with('statuses')->findOrFail($id);
+            // Validate the request input
+            $validated = $request->validate([
+                'document_format' => 'required|string|exists:documents,document_format'
+            ]);
+
+            // Find the document using document_format
+            $document = Document::with(['statuses' => function ($query) {
+                $query->orderByDesc('updated_at');
+            }])->where('document_format', $validated['document_format'])->firstOrFail();
+
+            // Format the created_at timestamps
+            $document->statuses->transform(function ($status) {
+                $status->date = \Carbon\Carbon::parse($status->created_at)->format('F d, Y, h:i A');
+                return $status;
+            });
+
             return response()->json($document);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Document not found'], 404);

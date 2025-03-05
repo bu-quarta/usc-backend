@@ -16,6 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UscAdviserController;
 use App\Http\Controllers\UscOfficialController;
 use App\Http\Controllers\UscPresidentsController;
+use App\Http\Controllers\ActivityLogController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     $user = $request->user();
@@ -61,9 +62,13 @@ Route::middleware(['auth', 'role:pio'])->group(function () {
         Route::apiResource('event-posts', EventPostController::class)->except(['show']);
         Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
         Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
-        Route::apiResource('reports', ReportController::class);
+        // Route::apiResource('reports', ReportController::class);
     });
 });
+
+Route::apiResource('reports', ReportController::class)->only(['store']);
+
+Route::post('/generate-report', [ReportController::class, 'generateReport']);
 
 // List all documents
 Route::get('documents', [DocumentController::class, 'index']);
@@ -72,10 +77,16 @@ Route::get('documents', [DocumentController::class, 'index']);
 Route::post('documents', [DocumentController::class, 'store']);
 
 // Show a specific document
-Route::get('documents/{id}', [DocumentController::class, 'show']);
+Route::post('documents/show', [DocumentController::class, 'show']);
 
 // Update the status of a document
 Route::put('documents/{id}/status', [DocumentController::class, 'update']);
 
 // Delete a document
 Route::delete('documents/{id}', [DocumentController::class, 'destroy']);
+
+Route::post('activity-log', [ActivityLogController::class, 'store']);
+// Activity Log APIs
+Route::get('activity-log/public-relations', [ActivityLogController::class, 'publicRelations']);
+Route::get('activity-log/audit-reports', [ActivityLogController::class, 'auditReports']);
+Route::get('activity-log/file-tracking', [ActivityLogController::class, 'fileTracking']);
