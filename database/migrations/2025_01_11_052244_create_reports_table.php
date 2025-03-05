@@ -14,7 +14,6 @@ class CreateReportsTable extends Migration
             $table->string('name'); // Report name
             $table->enum('type', ['narrative', 'liquidation', 'financial', 'audit', 'evaluation', 'glc', 'other']); // Report type
             $table->string('file_path'); // File path for the uploaded report
-            $table->date('date');
             $table->timestamps(); // Created at and updated at timestamps
         });
     }

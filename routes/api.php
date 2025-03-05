@@ -62,11 +62,9 @@ Route::middleware(['auth', 'role:pio'])->group(function () {
         Route::apiResource('event-posts', EventPostController::class)->except(['show']);
         Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
         Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
-        // Route::apiResource('reports', ReportController::class);
+        Route::apiResource('reports', ReportController::class);
     });
 });
-
-Route::apiResource('reports', ReportController::class)->only(['store']);
 
 Route::post('/generate-report', [ReportController::class, 'generateReport']);
 
