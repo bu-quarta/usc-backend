@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $pio_users = [
+        $admins = [
             [
                 'name' => 'Kyle Reuben O. Bron',
                 'email' => 'krob2022-8625-72115@bicol-u.edu.ph',
@@ -40,9 +40,9 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        foreach ($pio_users as $user) {
-            $user = User::firstOrCreate($user);
-            $user->assignRole('pio');
+        foreach ($admins as $admin) {
+            $user = User::firstOrCreate($admin);
+            $user->assignRole('pio', 'ivc', 'auditor');
         }
     }
 }
