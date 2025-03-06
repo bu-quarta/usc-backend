@@ -34,8 +34,8 @@ class EventPost extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function evaluations()
+    public function evaluation()
     {
-        return $this->hasMany(Evaluation::class, 'event_id', 'id');
+        return $this->hasOne(Evaluation::class, 'event_id', 'id');
     }
 }
