@@ -6,6 +6,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\EventPostResource;
 use App\Models\EventPost;
 use App\Models\Comment;
+use App\Models\Evaluation;
 use App\Models\Rating;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Event;
@@ -52,12 +53,16 @@ class EventPostController extends Controller
             $imagePath = Storage::url($request->file('image')->store('images/event_posts', 'public'));
         }
 
-        EventPost::create([
+        $event =  EventPost::create([
             'header' => $validated['title'],
             'description' => $validated['description'],
             'date_time' => $date_time,
             'location' => $validated['location'],
             'image_path' => $imagePath,
+        ]);
+
+        Evaluation::create([
+            'event_post_id' => $event->id,
         ]);
 
         return response()->noContent();
