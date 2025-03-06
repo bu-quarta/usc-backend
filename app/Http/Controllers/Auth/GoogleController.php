@@ -24,8 +24,8 @@ class GoogleController extends Controller
             $googleUser = $driver->stateless()->user();
 
             // Find or create user in the database
-            $user = User::firstOrCreate(
-                ['email' => $googleUser->getEmail()],
+            $user = User::updateOrCreate(
+                ['email' => $googleUser->getEmail()], // Search condition
                 [
                     'name' => $googleUser->getName(),
                     'google_id' => $googleUser->getId(),
