@@ -17,6 +17,8 @@ class EventPost extends Model
         'date_time' => 'datetime',
     ];
 
+    protected $with = ['evaluation'];
+
     // Define the fillable fields
     protected $fillable = [
         'header',
@@ -36,6 +38,21 @@ class EventPost extends Model
 
     public function evaluation()
     {
-        return $this->hasOne(Evaluation::class, 'event_id', 'id');
+        return $this->hasOne(Evaluation::class);
+    }
+
+    public function getEvaluationFormAttribute()
+    {
+        return $this->evaluation->evaluation_form ?? null;
+    }
+
+    public function getEventPostIdAttribute()
+    {
+        return $this->evaluation->event_post_id;
+    }
+
+    public function getEvaluationIdAttribute()
+    {
+        return $this->evaluation->id;
     }
 }

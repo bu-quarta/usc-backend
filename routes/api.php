@@ -105,5 +105,8 @@ Route::get('activity-log/file-tracking', [ActivityLogController::class, 'fileTra
 // });
 
 //No auth for testing only
-Route::resource('evaluations', EvaluationController::class);
-Route::post('evaluations/search', [EvaluationController::class, 'search']);
+Route::prefix('evaluations')->group(function () {
+    Route::get('/', [EvaluationController::class, 'index']); // Get all evaluations
+    Route::put('/{evaluation}', [EvaluationController::class, 'update']); // Update an evaluation
+    Route::post('/search', [EvaluationController::class, 'search']); // Search evaluations by event title
+});

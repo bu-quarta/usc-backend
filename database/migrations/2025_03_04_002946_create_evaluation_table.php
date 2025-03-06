@@ -9,11 +9,9 @@ return new class extends Migration {
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
-            $table->string('evaluation_form');
+            $table->foreignId('event_post_id')->constrained()->onDelete('cascade');
+            $table->string('evaluation_form')->nullable();
             $table->timestamps();
-            
-            $table->foreign('event_id')->references('id')->on('event_posts')->onDelete('cascade');
         });
     }
 

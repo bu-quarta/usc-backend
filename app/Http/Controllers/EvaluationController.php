@@ -10,10 +10,18 @@ class EvaluationController extends Controller
 {
     public function index()
     {
-        $evaluations = Evaluation::with(['event' => function ($query) {
-            $query->select('id', 'image_path', 'header', 'status');
-        }])->get(['id', 'event_id', 'evaluation_form']);        
-    
+        $events = EventPost::latest()->get()->map(function ($event) {
+            return [
+                'id' => $event->evaluation_id,
+                'event_post_id' => $event->event_post_id,
+                'image_path' => $event->image_path,
+                'header' => $event->header,
+                'status' => $event->status,
+                'evaluation_form' => $event->evaluation_form,
+            ];
+        });
+
+        return response()->json($events);
     }
 
     public function store(Request $request)
@@ -31,16 +39,21 @@ class EvaluationController extends Controller
         $evaluation->load(['event' => function ($query) {
             $query->select('id', 'image_path', 'header', 'status');
         }]);
-        
     }
 
     public function update(Request $request, Evaluation $evaluation)
     {
         $request->validate([
-            'evaluation_form' => 'sometimes|string',
+            'event_post_id' => 'required|exists:event_posts,id',
+            'evaluation_form' => 'sometimes',
         ]);
 
-        $evaluation->update($request->only(['evaluation_form']));
+        $evaluation->update([
+            'event_post_id' => $request->input('event_post_id'),
+            'evaluation_form' => $request->input('evaluation_form'),
+        ]);
+
+        return response()->noContent();
     }
 
     public function destroy(Evaluation $evaluation)
