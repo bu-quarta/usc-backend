@@ -17,6 +17,7 @@ use App\Http\Controllers\UscAdviserController;
 use App\Http\Controllers\UscOfficialController;
 use App\Http\Controllers\UscPresidentsController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\JudicialController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     $user = $request->user();
@@ -44,6 +45,7 @@ Route::get('news-updates/{slug}', [NewsUpdateController::class, 'show']);
 Route::apiResource('news-updates', NewsUpdateController::class)->only(['index']);
 Route::apiResource('reports', ReportController::class)->only(['index']);
 Route::get('faqs', [FaqController::class, 'index']);
+Route::get('judicials', [JudicialController::class, 'index']);
 
 Route::apiResource('event-posts', EventPostController::class)->except(['show']);
 Route::apiResource('news-updates', NewsUpdateController::class)->except(['show']);
