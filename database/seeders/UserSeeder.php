@@ -38,6 +38,14 @@ class UserSeeder extends Seeder
                 'name' => 'Eljohn Paulo C. Loterte',
                 'email' => 'epcl2023-2505-62222@bicol-u.edu.ph',
             ],
+            [
+                'name' => 'Eljohn Paulo C. Loterte',
+                'email' => 'eljhonpaulocolumna.loterte@bicol-u.edu.ph',
+            ],
+            [
+                'name' => 'Misty Shaine Niones',
+                'email' => 'mistyshainesambajon.niones@bicol-u.edu.ph',
+            ],
         ];
 
         foreach ($admins as $admin) {
