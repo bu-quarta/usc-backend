@@ -25,6 +25,7 @@ class EventPostResource extends JsonResource
             'status' => $this->status,
             'date_posted' => $this->created_at->format('F j, Y'),
             'date_time_posted' => $this->date_time->format('F j, Y | g:i A'),
+            'evaluation_form' => $this->evaluation_form,
         ];
     }
 }
