@@ -71,10 +71,14 @@ class DocumentController extends Controller
     {
         $request->validate([
             'status' => 'required|string|in:PENDING,SIGNED,FORWARDED,RECEIVED', // Validate status
+            'name' => 'required|string|max:255', // Validate name
         ]);
 
         // Check if the document exists
         $document = Document::findOrFail($id);
+
+        $document->name = $request->name;
+        $document->save();
 
         // Add a new status entry in the document_statuses table
         $newStatus = DocumentStatus::create([
@@ -82,7 +86,7 @@ class DocumentController extends Controller
             'status' => $request->status,
         ]);
 
-        return response()->json(['message' => 'Document status updated successfully', 'status' => $newStatus]);
+        return response()->noContent();
     }
 
     // Delete a document and its statuses
