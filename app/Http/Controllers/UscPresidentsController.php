@@ -13,7 +13,7 @@ class UscPresidentsController extends Controller
      */
     public function index()
     {
-        $presidents = UscPresidents::all();
+        $presidents = UscPresidents::orderBy('year_range', 'desc')->get();
         return UscPresidentResource::collection($presidents)->collection;
     }
 
