@@ -19,6 +19,7 @@ use App\Http\Controllers\UscPresidentsController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\JudicialController;
+use App\Http\Controllers\UscCouncilorController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     $user = $request->user();
@@ -38,6 +39,7 @@ Route::get('developers', [DeveloperController::class, 'index']);
 Route::get('usc-presidents', [UscPresidentsController::class, 'index']);
 Route::get('usc-officials', [UscOfficialController::class, 'index']);
 Route::get('usc-advisers', [UscAdviserController::class, 'index']);
+Route::get('usc-councilors', [UscCouncilorController::class, 'index']);
 Route::get('comments', [CommentController::class, 'index']);
 
 Route::get('event-posts/{slug}', [EventPostController::class, 'show']);
