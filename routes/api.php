@@ -19,6 +19,7 @@ use App\Http\Controllers\UscPresidentsController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\GlcOfficerController;
+use App\Http\Controllers\GlcVotingNonVotingController;
 use App\Http\Controllers\JudicialController;
 use App\Http\Controllers\UscCouncilorController;
 
@@ -51,6 +52,7 @@ Route::apiResource('news-updates', NewsUpdateController::class)->only(['index'])
 Route::apiResource('reports', ReportController::class)->only(['index']);
 Route::get('faqs', [FaqController::class, 'index']);
 Route::get('judicials', [JudicialController::class, 'index']);
+Route::get('glc-members', [GlcVotingNonVotingController::class, 'index']);
 Route::post('documents/show', [DocumentController::class, 'show']);
 
 Route::apiResource('event-posts', EventPostController::class)->except(['show']);
