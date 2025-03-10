@@ -11,20 +11,12 @@ use Illuminate\Support\Facades\Storage;
 class ReportController extends Controller
 {
     // List all reports or filter by type
-    public function index(Request $request)
+    public function index()
     {
-        $type = $request->input('type'); // Optional query parameter to filter by type
-
-        if ($type) {
-            return ReportResource::collection(
-                Report::where('type', $type)
-                    ->orderBy('updated_at', 'desc')
-                    ->get()
-            )->collection;
-        }
-
         return ReportResource::collection(
-            Report::orderBy('updated_at', 'desc')->get()
+            Report::whereNot('type', 'glc')
+                ->orderBy('updated_at', 'desc')
+                ->get()
         )->collection;
     }
 
@@ -210,5 +202,23 @@ class ReportController extends Controller
         }
 
         return response()->json($reportData);
+    }
+
+    public function glcReports()
+    {
+        $glc_reports = Report::where('type', 'glc')
+            ->whereStatusNotPending()
+            ->orderBy('updated_at', 'desc')
+            ->get()
+            ->map(function ($report) {
+                return [
+                    'title' => $report->name,
+                    'date_time' => $report->updated_at->format('Y-m-d H:i:s'),
+                    'file_url' => $report->file_path,
+                    'status' => $report->status,
+                ];
+            });
+
+        return response()->json($glc_reports);
     }
 }

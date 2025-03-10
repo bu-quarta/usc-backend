@@ -53,6 +53,7 @@ Route::apiResource('reports', ReportController::class)->only(['index']);
 Route::get('faqs', [FaqController::class, 'index']);
 Route::get('judicials', [JudicialController::class, 'index']);
 Route::get('glc-members', [GlcVotingNonVotingController::class, 'index']);
+Route::get('glc-reports', [ReportController::class, 'glcReports']);
 Route::post('documents/show', [DocumentController::class, 'show']);
 
 Route::apiResource('event-posts', EventPostController::class)->except(['show']);
