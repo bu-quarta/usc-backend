@@ -11,8 +11,18 @@ use Illuminate\Support\Facades\Storage;
 class ReportController extends Controller
 {
     // List all reports or filter by type
-    public function index()
+    public function index(Request $request)
     {
+        $type = $request->input('type'); // Optional query parameter to filter by type
+
+        if ($type) {
+            return ReportResource::collection(
+                Report::where('type', $type)
+                    ->orderBy('updated_at', 'desc')
+                    ->get()
+            )->collection;
+        }
+
         return ReportResource::collection(
             Report::whereNot('type', 'glc')
                 ->orderBy('updated_at', 'desc')
