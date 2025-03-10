@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('usc_councilors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('college');
             $table->string('type');
             $table->timestamps();
         });

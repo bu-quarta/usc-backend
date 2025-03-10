@@ -13,7 +13,10 @@ class UscCouncilorController extends Controller
             return [
                 'type' => $type,
                 'members' => $group->map(function ($councilor) {
-                    return ['name' => $councilor->name];
+                    return [
+                        'name' => $councilor->name,
+                        'college' => $councilor->college
+                    ];
                 })->values()
             ];
         })->values();
