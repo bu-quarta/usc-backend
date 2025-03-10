@@ -24,7 +24,7 @@ class Report extends Model
 
     public function getStatusAttribute()
     {
-        return $this->glcStatus->status;
+        return $this->glcStatus->status ?? null;
     }
 
     public function scopeWhereStatusNotPending($query)

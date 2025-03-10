@@ -20,6 +20,7 @@ class ReportResource extends JsonResource
             'title' => $this->name,
             'date_time' => $this->updated_at->format('M. j, Y | g:i A'),
             'file_url' => $this->file_path,
+            'status' => $this->status,
         ];
     }
 }

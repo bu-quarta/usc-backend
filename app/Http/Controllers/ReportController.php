@@ -37,6 +37,7 @@ class ReportController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|string|in:narrative,liquidation,financial,audit,evaluation,glc,other',
             'file' => 'sometimes|file|mimes:pdf|max:2048',
+            'status' => 'sometimes|string|in:pending,approved,lost'
         ]);
 
         if ($request->hasFile('file')) {
@@ -49,6 +50,10 @@ class ReportController extends Controller
             'file_path' => $filePath,
         ]);
 
+        if ($request->status) {
+            $report->glcStatus()->create(['status' => $request->status]);
+        }
+
         return response()->json(['message' => 'Report uploaded successfully', 'report' => $report], 201);
     }
 
@@ -57,7 +62,8 @@ class ReportController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'file' => 'file|mimes:pdf' // Restrict file types
+            'file' => 'file|mimes:pdf', // Restrict file types
+            'status' => 'sometimes|string|in:pending,approved,lost'
         ]);
 
         $filePath = null;
@@ -70,6 +76,10 @@ class ReportController extends Controller
             'name' => $request->name,
             'file_path' => $filePath ?? $report->file_path,
         ]);
+
+        if ($request->status) {
+            $report->glcStatus()->updateOrCreate([], ['status' => $request->status]);
+        }
 
         return response()->noContent();
     }
@@ -218,7 +228,7 @@ class ReportController extends Controller
     {
         $glc_reports = Report::where('type', 'glc')
             ->whereStatusNotPending()
-            ->orderBy('updated_at', 'desc')
+            ->latest('updated_at')
             ->get()
             ->map(function ($report) {
                 return [
