@@ -14,6 +14,8 @@ class CscDirectory extends Model
     protected $fillable = [
         'name',
         'abbr',
+        'email',
+        'location',
         'slug',
         'year_range',
         'image_url',

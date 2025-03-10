@@ -18,6 +18,8 @@ class CscDirectoryResource extends JsonResource
             'name' => $this->name,
             'abbr' => $this->abbr,
             'slug' => $this->slug,
+            'email' => $this->email,
+            'location' => $this->location,
             'image_url' => $this->image_url,
         ];
     }

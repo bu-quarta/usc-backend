@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('abbr');
             $table->string('slug');
+            $table->string('email');
+            $table->string('location');
             $table->string('year_range');
             $table->string('image_url');
             $table->timestamps();
