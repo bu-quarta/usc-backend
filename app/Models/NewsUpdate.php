@@ -21,7 +21,17 @@ class NewsUpdate extends Model
     // Define the relationship with the Comment model
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'news_update_id', 'update_id');
+        return $this->hasMany(Comment::class, 'id', 'id');
+    }
+
+    public function likes()
+    {
+        return $this->hasManyThrough(Like::class, Comment::class, 'id', 'comment_id');
+    }
+
+    public function dislikes()
+    {
+        return $this->hasManyThrough(Dislike::class, Comment::class, 'id', 'comment_id');
     }
 
     public function getSlugOptions(): SlugOptions

@@ -41,6 +41,21 @@ class EventPost extends Model
         return $this->hasOne(Evaluation::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'id');
+    }
+
+    public function likes()
+    {
+        return $this->hasManyThrough(Like::class, Comment::class, 'id', 'comment_id');
+    }
+
+    public function dislikes()
+    {
+        return $this->hasManyThrough(Dislike::class, Comment::class, 'id', 'comment_id');
+    }
+
     public function getEvaluationFormAttribute()
     {
         return $this->evaluation->evaluation_form ?? null;
@@ -48,11 +63,11 @@ class EventPost extends Model
 
     public function getEventPostIdAttribute()
     {
-        return $this->evaluation->event_post_id;
+        return $this->evaluation->event_post_id ?? null;
     }
 
     public function getEvaluationIdAttribute()
     {
-        return $this->evaluation->id;
+        return $this->evaluation->id ?? null;
     }
 }
