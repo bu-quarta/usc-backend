@@ -24,10 +24,14 @@ class NewsUpdateController extends Controller
     {
         // Validate the request with optional fields
         $validated = $request->validate([
-            'title' => 'required|string|max:255', // Title is optional
-            'description' => 'required|string', // Description is optional
-            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image is optional
-            'status' => 'nullable|in:published,draft', // Status is optional
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'nullable|in:published,draft',
+            'posted_by_name' => 'required|string|max:255',   // Added field
+            'posted_by_position' => 'required|string|max:255', // Added field
+            'layout_by_name' => 'required|string|max:255',   // Added field
+            'layout_by_position' => 'required|string|max:255', // Added field
         ]);
 
         // Handle the image upload
@@ -43,11 +47,14 @@ class NewsUpdateController extends Controller
             'description' => $validated['description'],
             'image_path' => $imagePath,
             'status' => $validated['status'] ?? 'draft',
+            'posted_by_name' => $validated['posted_by_name'],
+            'posted_by_position' => $validated['posted_by_position'],
+            'layout_by_name' => $validated['layout_by_name'],
+            'layout_by_position' => $validated['layout_by_position'],
         ]);
 
         return response()->noContent();
     }
-
 
     public function show($slug)
     {
@@ -75,19 +82,21 @@ class NewsUpdateController extends Controller
     {
         // Validate the request with optional fields
         $validated = $request->validate([
-            'title' => 'required|string|max:255', // Title is optional
-            'description' => 'required|string', // Description is optional
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image is optional
-            'status' => 'nullable|in:published,draft', // Status is optional
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'nullable|in:published,draft',
+            'posted_by_name' => 'required|string|max:255',   // Added field
+            'posted_by_position' => 'required|string|max:255', // Added field
+            'layout_by_name' => 'required|string|max:255',   // Added field
+            'layout_by_position' => 'required|string|max:255', // Added field
         ]);
 
         // Handle the image upload
-        $imagePath = null;
+        $imagePath = $newsUpdate->image_path;
 
         if ($request->hasFile('image')) {
             $imagePath = Storage::url($request->file('image')->store('images/news_updates', 'public'));
-        } else {
-            $imagePath = $newsUpdate->image_path;
         }
 
         // Update the news update
@@ -96,11 +105,14 @@ class NewsUpdateController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'status' => $validated['status'] ?? 'draft',
+            'posted_by_name' => $validated['posted_by_name'],
+            'posted_by_position' => $validated['posted_by_position'],
+            'layout_by_name' => $validated['layout_by_name'],
+            'layout_by_position' => $validated['layout_by_position'],
         ]);
 
         return response()->noContent();
     }
-
 
     /**
      * Delete a specific news update along with its related comments.

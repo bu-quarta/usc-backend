@@ -15,13 +15,17 @@ class NewsUpdate extends Model
         'title',
         'description',
         'image_path',
-        'status',
+        'posted_by_name',   // Added field for "Posted by" name
+        'posted_by_position', // Added field for "Posted by" position
+        'layout_by_name',   // Added field for "Layout by" name
+        'layout_by_position', // Added field for "Layout by" position
+        'status'
     ];
 
     // Define the relationship with the Comment model
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'news_update_id', 'update_id');
+        return $this->hasMany(Comment::class, 'news_update_id', 'id');
     }
 
     public function getSlugOptions(): SlugOptions
