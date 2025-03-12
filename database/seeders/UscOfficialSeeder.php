@@ -20,7 +20,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Arts and Letters',
                 'email' => 'stacydanielvibar.alamares@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/alamares.jpg',
+                'image_url' => '/images/executive-council/alamares.png',
             ],
             [
                 'name' => 'JAMILLE R. BUIZA',
@@ -28,7 +28,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'Jesse M. Robredo Institute of Governance and Development',
                 'email' => 'jamillerodis.buiza@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/buiza.png',
+                'image_url' => '/images/executive-council/buiza.png',
             ],
             [
                 'name' => 'KC MAXINNE A. MENDONES',
@@ -36,7 +36,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Science',
                 'email' => 'kmam2022-3284-64835@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/mendones.jpg',
+                'image_url' => '/images/executive-council/mendones.png',
             ],
             [
                 'name' => 'RANCIA LEI B. BULAWAN',
@@ -44,7 +44,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Business, Economics, and Management',
                 'email' => 'rancialeibarcelona.bulawan@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/bulawan.jpg',
+                'image_url' => '/images/executive-council/bulawan.png',
             ],
             [
                 'name' => 'BEA LYZZAH B. MADRONIO',
@@ -52,7 +52,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Business, Economics, and Management',
                 'email' => 'blbm2022-9271-60342@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/madronio.jpeg',
+                'image_url' => '/images/executive-council/madronio.png',
             ],
             [
                 'name' => 'YANCY S. BERMAS',
@@ -60,7 +60,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Engineering',
                 'email' => 'yancysalinas.bermas@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/bermas.jpg',
+                'image_url' => '/images/executive-council/bermas.png',
             ],
             [
                 'name' => 'ZHARISSE S. DE LOS SANTOS',
@@ -68,7 +68,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Engineering',
                 'email' => 'zharissesantos.delossantos@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/delos-santos.JPG',
+                'image_url' => '/images/executive-council/delos-santos.png',
             ],
             [
                 'name' => 'ARIANNA KESI A. DIGO',
@@ -76,7 +76,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Business, Economics, and Management',
                 'email' => 'ariannakesiarmero.digo@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/digo.jpg',
+                'image_url' => '/images/executive-council/digo.png',
             ],
             [
                 'name' => 'IZEL B. MANATA',
@@ -84,7 +84,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Arts and Letters',
                 'email' => 'ibm2022-7479-16079@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/manata.jpg',
+                'image_url' => '/images/executive-council/manata.png',
             ],
             [
                 'name' => 'KYLE REUBEN O. BRON',
@@ -92,7 +92,7 @@ class UscOfficialSeeder extends Seeder
                 'college' => 'College of Social Sciences and Philosophy',
                 'email' => 'krob2022-8625-72115@bicol-u.edu.ph',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-2024-2025/bron.jpg',
+                'image_url' => '/images/executive-council/bron.png',
             ],
         ];
 
