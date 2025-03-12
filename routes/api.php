@@ -19,6 +19,7 @@ use App\Http\Controllers\UscPresidentsController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\JudicialController;
+use App\Http\Controllers\AdminDashboardController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     $user = $request->user();
@@ -110,3 +111,5 @@ Route::prefix('evaluations')->group(function () {
     Route::put('/{evaluation}', [EvaluationController::class, 'update']); // Update an evaluation
     Route::post('/search', [EvaluationController::class, 'search']); // Search evaluations by event title
 });
+
+Route::get('admin-dashboard', [AdminDashboardController::class, 'getStatistics']);

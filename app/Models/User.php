@@ -24,6 +24,7 @@ class User extends Authenticatable
         'google_id',
         'avatar',
         'password',
+        'status', // Added status field
     ];
 
     /**
