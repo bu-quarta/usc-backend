@@ -55,4 +55,9 @@ class EventPost extends Model
     {
         return $this->evaluation->id;
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(EventRating::class, 'event_id');
+    }
 }
