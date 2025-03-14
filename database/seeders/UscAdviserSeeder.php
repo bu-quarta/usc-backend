@@ -19,21 +19,21 @@ class UscAdviserSeeder extends Seeder
                 'position' => 'Faculty, College of Engineering',
                 'type' => 'Senior Adviser',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-advisers-2024-2025/dulay.jpg',
+                'image_url' => '/images/executive-council/engr_hana.png',
             ],
             [
                 'name' => 'DR. OFELIA SAMAR-SY',
                 'position' => 'Dean, College of Medicine',
                 'type' => 'Junior Adviser',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-advisers-2024-2025/samar-sy.jpg',
+                'image_url' => '/images/executive-council/dr_ofelia.png',
             ],
             [
                 'name' => 'PROF. JAZZLYN IMPERIAL',
                 'position' => 'Faculty, College of Science',
                 'type' => 'Junior Adviser',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/usc-advisers-2024-2025/imperial.jpg',
+                'image_url' => '/images/executive-council/profjaz.png',
             ]
         ];
 
