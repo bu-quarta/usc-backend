@@ -26,7 +26,7 @@ class CscDirectorySeeder extends Seeder
                 'name' => 'College of Business, Economics, and Management',
                 'abbr' => 'BUCBEM CSC',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/csc-logos-2024-2025/bucbem.jpeg',
+                'image_url' => '/storage/images/csc-logos-2024-2025/bucbem.png',
                 'email' => 'bucbem-csc@bicol-u.edu.ph',
                 'location' => 'Room 106 1/F Seva Building, Bicol University Daraga Campus, Rizal Street, Sagpon, Daraga, Albay',
             ], // 2 - CBEM
@@ -58,7 +58,7 @@ class CscDirectorySeeder extends Seeder
                 'name' => 'College of Industrial Technology',
                 'abbr' => 'BUCIT CSC',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/csc-logos-2024-2025/bucit.jpg',
+                'image_url' => '/storage/images/csc-logos-2024-2025/bucit.png',
                 'email' => 'bucit-csc@bicol-u.edu.ph',
                 'location' => 'New ELT Building, Bicol University East Campus, Barangay 1 – Em’s Barrio, Legazpi City, Albay',
             ], // 6 - CIT
@@ -66,7 +66,7 @@ class CscDirectorySeeder extends Seeder
                 'name' => 'College of Law',
                 'abbr' => 'BUCL CSC',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/csc-logos-2024-2025/bucl.jpg',
+                'image_url' => '/storage/images/csc-logos-2024-2025/bucl.png',
                 'email' => 'bucl-csc@bicol-u.edu.ph',
                 'location' => '3/F Aquilino P. Bonto Bldg., Bicol University Main Campus, Legazpi City, Albay',
             ], // 7 - CL
@@ -82,7 +82,7 @@ class CscDirectorySeeder extends Seeder
                 'name' => 'College of Nursing',
                 'abbr' => 'BUCN CSC',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/csc-logos-2024-2025/bucn.jpg',
+                'image_url' => '/storage/images/csc-logos-2024-2025/bucn.png',
                 'email' => 'bucn-csc@bicol-u.edu.ph',
                 'location' => '2/F Room 205 (NSTP Office), Bicol University Main Campus, College of Nursing, Legazpi City, Albay',
             ], // 9 - CN
@@ -122,7 +122,7 @@ class CscDirectorySeeder extends Seeder
                 'name' => 'Bicol University Jesse M. Robredo Institute of Governance and Development',
                 'abbr' => 'JMRIGD CSC',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/csc-logos-2024-2025/jmrigd.jpg',
+                'image_url' => '/storage/images/csc-logos-2024-2025/jmrigd.png',
                 'email' => 'jmrigd-csc@bicol-u.edu.ph',
                 'location' => '3/F Aquilino P. Bonto Bldg, Bicol University Main Campus, Legazpi City, Albay',
             ], // 14 - JMRIGD
@@ -138,7 +138,7 @@ class CscDirectorySeeder extends Seeder
                 'name' => 'Bicol University Guinobatan',
                 'abbr' => 'BU Guinobatan CSC',
                 'year_range' => '2024-2025',
-                'image_url' => '/storage/images/csc-logos-2024-2025/bu-guinobatan.jpg',
+                'image_url' => '/storage/images/csc-logos-2024-2025/bu-guinobatan.png',
                 'email' => 'bucaf-csc@bicol-u.edu.ph',
                 'location' => 'FTC Hall, Bicol University Guinobatan, Morera, Guinobatan, Albay',
             ], // 16 - Guinobatan
