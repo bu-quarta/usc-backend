@@ -42,6 +42,7 @@ class EventPostController extends Controller
             'description' => 'required|string',
             'date_time' => 'required|string',
             'location' => 'required|string',
+            'status' => 'required|in:UPCOMING,ONGOING,PAST',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
@@ -58,6 +59,7 @@ class EventPostController extends Controller
             'description' => $validated['description'],
             'date_time' => $date_time,
             'location' => $validated['location'],
+            'status' => $validated['status'],
             'image_path' => $imagePath,
         ]);
 
@@ -122,6 +124,7 @@ class EventPostController extends Controller
             'description' => 'required|string',
             'date_time' => 'required|string',
             'location' => 'required|string',
+            'status' => 'required|in:UPCOMING,ONGOING,PAST',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
@@ -138,6 +141,7 @@ class EventPostController extends Controller
             'description' => $validated['description'],
             'date_time' => $date_time,
             'location' => $validated['location'],
+            'status' => $validated['status'],
             'image_path' => $imagePath ?? $eventPost->image_path,
         ]);
 
