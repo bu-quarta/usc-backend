@@ -15,10 +15,8 @@ class NewsUpdate extends Model
         'title',
         'description',
         'image_path',
-        'posted_by_name',   // Added field for "Posted by" name
-        'posted_by_position', // Added field for "Posted by" position
-        'layout_by_name',   // Added field for "Layout by" name
-        'layout_by_position', // Added field for "Layout by" position
+        'posted_by',   // Added field for "Posted by" name
+        'layout_by',   // Added field for "Layout by" name
         'status'
     ];
 

@@ -28,10 +28,8 @@ class NewsUpdateController extends Controller
             'description' => 'required|string',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'nullable|in:published,draft',
-            'posted_by_name' => 'required|string|max:255',   // Added field
-            'posted_by_position' => 'required|string|max:255', // Added field
-            'layout_by_name' => 'required|string|max:255',   // Added field
-            'layout_by_position' => 'required|string|max:255', // Added field
+            'posted_by' => 'required|string|max:255',   // Added field
+            'layout_by' => 'required|string|max:255',   // Added field
         ]);
 
         // Handle the image upload
@@ -47,10 +45,8 @@ class NewsUpdateController extends Controller
             'description' => $validated['description'],
             'image_path' => $imagePath,
             'status' => $validated['status'] ?? 'draft',
-            'posted_by_name' => $validated['posted_by_name'],
-            'posted_by_position' => $validated['posted_by_position'],
-            'layout_by_name' => $validated['layout_by_name'],
-            'layout_by_position' => $validated['layout_by_position'],
+            'posted_by' => $validated['posted_by'],
+            'layout_by' => $validated['layout_by'],
         ]);
 
         return response()->noContent();
@@ -86,10 +82,8 @@ class NewsUpdateController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'nullable|in:published,draft',
-            'posted_by_name' => 'required|string|max:255',   // Added field
-            'posted_by_position' => 'required|string|max:255', // Added field
-            'layout_by_name' => 'required|string|max:255',   // Added field
-            'layout_by_position' => 'required|string|max:255', // Added field
+            'posted_by' => 'required|string|max:255',   // Added field
+            'layout_by' => 'required|string|max:255',   // Added field
         ]);
 
         // Handle the image upload
@@ -105,10 +99,8 @@ class NewsUpdateController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'status' => $validated['status'] ?? 'draft',
-            'posted_by_name' => $validated['posted_by_name'],
-            'posted_by_position' => $validated['posted_by_position'],
-            'layout_by_name' => $validated['layout_by_name'],
-            'layout_by_position' => $validated['layout_by_position'],
+            'posted_by' => $validated['posted_by'],
+            'layout_by' => $validated['layout_by'],
         ]);
 
         return response()->noContent();
