@@ -24,6 +24,7 @@ class NewsUpdate extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'news_update_id', 'id');
+        return $this->hasMany(Comment::class, 'news_update_id', 'id');
     }
 
     public function getSlugOptions(): SlugOptions

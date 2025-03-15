@@ -88,6 +88,7 @@ class NewsUpdateController extends Controller
 
         // Handle the image upload
         $imagePath = $newsUpdate->image_path;
+        $imagePath = $newsUpdate->image_path;
 
         if ($request->hasFile('image')) {
             $imagePath = Storage::url($request->file('image')->store('images/news_updates', 'public'));
