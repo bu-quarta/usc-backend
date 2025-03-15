@@ -9,7 +9,7 @@ class DocumentStatus extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['document_id', 'status'];
+    protected $fillable = ['document_id', 'status', 'remarks'];
 
     // Relationship with documents
     public function document()

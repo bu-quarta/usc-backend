@@ -72,6 +72,7 @@ class DocumentController extends Controller
         $request->validate([
             'status' => 'required|string|in:PENDING,SIGNED,FORWARDED,RECEIVED', // Validate status
             'name' => 'required|string|max:255', // Validate name
+            'remarks' => 'nullable|string', // Validate remarks
         ]);
 
         // Check if the document exists
@@ -84,6 +85,7 @@ class DocumentController extends Controller
         $newStatus = DocumentStatus::create([
             'document_id' => $document->id,
             'status' => $request->status,
+            'remarks' => $request->remarks,
         ]);
 
         return response()->noContent();

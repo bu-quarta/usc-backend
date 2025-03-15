@@ -12,6 +12,7 @@ class CreateDocumentStatusesTable extends Migration
             $table->id();
             $table->foreignId('document_id')->constrained()->onDelete('cascade'); // Reference to the documents table
             $table->string('status'); // Status of the document (e.g., PENDING, APPROVED, REJECTED)
+            $table->string('remarks')->nullable(); // Additional notes for the status
             $table->timestamps(); // Tracks when the status was created
         });
     }
