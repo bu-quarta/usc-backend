@@ -104,7 +104,7 @@ class GlcVotingNonVotingController extends Controller
 
     private function getFormattedEditorsInChief()
     {
-        $editorsInChief = GlcVotingNonVoting::where('type', 'NON-VOTING MEMBERS | STUDENT PUBLICATIONS’ EDITORS-IN-CHIEF')
+        $editorsInChief = GlcVotingNonVoting::where('type', 'NON-VOTING MEMBERS | STUDENT PUBLICATION EDITORS-IN-CHIEF')
             ->get();
 
         $formattedEditorsInChief = [
