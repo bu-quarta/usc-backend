@@ -44,7 +44,7 @@ class EventPostController extends Controller
             'date_time' => 'required|string',
             'location' => 'required|string',
             'status' => 'required|in:UPCOMING,ONGOING,ACCOMPLISHED',
-            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $date_time = Carbon::parse($validated['date_time'], 'UTC')->setTimezone('Asia/Manila');
@@ -130,7 +130,7 @@ class EventPostController extends Controller
             'date_time' => 'required|string',
             'location' => 'required|string',
             'status' => 'required|in:UPCOMING,ONGOING,ACCOMPLISHED',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $date_time = Carbon::parse($validated['date_time'], 'UTC')->setTimeZone('Asia/Manila');
