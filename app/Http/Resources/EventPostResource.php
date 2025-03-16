@@ -18,7 +18,7 @@ class EventPostResource extends JsonResource
             'id' => $this->id,
             'title' => $this->header,
             'slug' => $this->slug,
-            'by' => $this->by,
+            'by' => explode('😊', $this->by),
             'layout_by' => $this->layout_by,
             'photo_by' => $this->photo_by,
             'description' => $this->description,
