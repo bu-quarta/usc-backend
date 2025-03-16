@@ -22,7 +22,7 @@ class EventPostResource extends JsonResource
             'layout_by' => $this->layout_by,
             'photo_by' => $this->photo_by,
             'description' => $this->description,
-            'date_time' => $this->date_time->format('F j, Y | g:i A'),
+            'date_time' => $this->date_time->format('F j, Y'),
             'location' => $this->location,
             'image_url' => $this->image_path,
             'status' => $this->status,
