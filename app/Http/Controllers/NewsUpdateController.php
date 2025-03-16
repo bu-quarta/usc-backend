@@ -26,11 +26,9 @@ class NewsUpdateController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
             'status' => 'nullable|in:published,draft',
             'by' => 'required|string|max:255',   // Added field
-            'layout_by' => 'required|string|max:255',   // Added field
-            'photo_by' => 'required|string|max:255',   // Added field
         ]);
 
         // Handle the image upload
@@ -47,8 +45,8 @@ class NewsUpdateController extends Controller
             'image_path' => $imagePath,
             'status' => $validated['status'] ?? 'draft',
             'by' => $validated['by'],
-            'layout_by' => $validated['layout_by'],
-            'photo_by' => $validated['photo_by'],
+            'layout_by' => $request['layout_by'] ?? null,
+            'photo_by' => $request['photo_by'] ?? null,
         ]);
 
         return response()->noContent();
@@ -82,11 +80,9 @@ class NewsUpdateController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:51200',
             'status' => 'nullable|in:published,draft',
             'by' => 'required|string|max:255',   // Added field
-            'layout_by' => 'required|string|max:255',   // Added field
-            'photo_by' => 'required|string|max:255',   // Added field
         ]);
 
         // Handle the image upload
@@ -104,8 +100,8 @@ class NewsUpdateController extends Controller
             'description' => $validated['description'],
             'status' => $validated['status'] ?? 'draft',
             'by' => $validated['by'],
-            'layout_by' => $validated['layout_by'],
-            'photo_by' => $validated['photo_by'],
+            'layout_by' => $request['layout_by'] ?? null,
+            'photo_by' => $request['photo_by'] ?? null,
         ]);
 
         return response()->noContent();

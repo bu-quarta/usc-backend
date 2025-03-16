@@ -19,8 +19,8 @@ class CreateNewsUpdatesTable extends Migration
             $table->string('slug')->unique(); // slug for the news-update
             $table->text('description'); // content of the news/update
             $table->string('by'); // name of the person who posted
-            $table->string('layout_by'); // name of the person responsible for layout
-            $table->string('photo_by'); // name of the person responsible for the photo
+            $table->string('layout_by')->nullable(); // name of the person responsible for the layout
+            $table->string('photo_by')->nullable(); // name of the person responsible for the photo
             $table->timestamp('publish_date')->useCurrent(); // publish date (defaults to current timestamp)
             $table->string('image_path')->nullable(); // path to the image
             $table->enum('status', ['published', 'draft'])->default('draft'); // status of the news/update
