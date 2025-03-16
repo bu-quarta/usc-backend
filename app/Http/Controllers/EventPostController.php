@@ -39,10 +39,11 @@ class EventPostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'by' => 'required|string',
             'description' => 'required|string',
             'date_time' => 'required|string',
             'location' => 'required|string',
-            'status' => 'required|in:UPCOMING,ONGOING,PAST',
+            'status' => 'required|in:UPCOMING,ONGOING,ACCOMPLISHED',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
@@ -56,6 +57,9 @@ class EventPostController extends Controller
 
         $event =  EventPost::create([
             'header' => $validated['title'],
+            'by' => $validated['by'],
+            'layout_by' => $request['layout_by'] ?? null,
+            'photo_by' => $request['photo_by'] ?? null,
             'description' => $validated['description'],
             'date_time' => $date_time,
             'location' => $validated['location'],
@@ -121,10 +125,11 @@ class EventPostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'by' => 'required|string',
             'description' => 'required|string',
             'date_time' => 'required|string',
             'location' => 'required|string',
-            'status' => 'required|in:UPCOMING,ONGOING,PAST',
+            'status' => 'required|in:UPCOMING,ONGOING,ACCOMPLISHED',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
@@ -138,6 +143,9 @@ class EventPostController extends Controller
 
         $eventPost->update([
             'header' => $validated['title'],
+            'by' => $validated['by'],
+            'layout_by' => $request['layout_by'] ?? null,
+            'photo_by' => $request['photo_by'] ?? null,
             'description' => $validated['description'],
             'date_time' => $date_time,
             'location' => $validated['location'],

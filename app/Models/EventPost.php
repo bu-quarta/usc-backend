@@ -22,10 +22,13 @@ class EventPost extends Model
     // Define the fillable fields
     protected $fillable = [
         'header',
-        'description',
+        'by',
+        'layout_by',
+        'photo_by',
         'date_time',
         'location',
         'image_path',
+        'description',
         'status'
     ];
 

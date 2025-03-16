@@ -15,11 +15,14 @@ class CreateEventPostsTable extends Migration
             $table->id();
             $table->string('header'); // Header of the post
             $table->string('slug')->unique(); // Slug field
-            $table->text('description'); // Description of the post
+            $table->string('by'); // name of the person who posted
+            $table->string('layout_by')->nullable(); // name of the person responsible for the layout
+            $table->string('photo_by')->nullable(); // name of the person responsible for the photo
             $table->dateTime('date_time'); // Date and time field
             $table->string('location');
             $table->string('image_path');
-            $table->enum('status', ['UPCOMING', 'ONGOING', 'PAST'])->default('UPCOMING'); // Status field with 3 values
+            $table->text('description'); // Description of the post
+            $table->enum('status', ['UPCOMING', 'ONGOING', 'ACCOMPLISHED'])->default('UPCOMING'); // Status field with 3 values
             $table->timestamps(); // Created_at and Updated_at fields
         });
     }
