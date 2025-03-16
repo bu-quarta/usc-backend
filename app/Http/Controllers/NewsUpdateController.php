@@ -28,8 +28,9 @@ class NewsUpdateController extends Controller
             'description' => 'required|string',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'nullable|in:published,draft',
-            'posted_by' => 'required|string|max:255',   // Added field
+            'by' => 'required|string|max:255',   // Added field
             'layout_by' => 'required|string|max:255',   // Added field
+            'photo_by' => 'required|string|max:255',   // Added field
         ]);
 
         // Handle the image upload
@@ -45,8 +46,9 @@ class NewsUpdateController extends Controller
             'description' => $validated['description'],
             'image_path' => $imagePath,
             'status' => $validated['status'] ?? 'draft',
-            'posted_by' => $validated['posted_by'],
+            'by' => $validated['by'],
             'layout_by' => $validated['layout_by'],
+            'photo_by' => $validated['photo_by'],
         ]);
 
         return response()->noContent();
@@ -82,8 +84,9 @@ class NewsUpdateController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'nullable|in:published,draft',
-            'posted_by' => 'required|string|max:255',   // Added field
+            'by' => 'required|string|max:255',   // Added field
             'layout_by' => 'required|string|max:255',   // Added field
+            'photo_by' => 'required|string|max:255',   // Added field
         ]);
 
         // Handle the image upload
@@ -100,8 +103,9 @@ class NewsUpdateController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'status' => $validated['status'] ?? 'draft',
-            'posted_by' => $validated['posted_by'],
+            'by' => $validated['by'],
             'layout_by' => $validated['layout_by'],
+            'photo_by' => $validated['photo_by'],
         ]);
 
         return response()->noContent();
