@@ -36,7 +36,7 @@ class ReportController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|in:narrative,liquidation,financial,audit,evaluation,glc,other',
-            'file' => 'sometimes|file|mimes:pdf|max:2048',
+            'file' => 'file|mimes:pdf',
             'status' => 'sometimes|string|in:pending,approved,lost'
         ]);
 
