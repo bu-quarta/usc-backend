@@ -227,7 +227,6 @@ class ReportController extends Controller
     public function glcReports()
     {
         $glc_reports = Report::where('type', 'glc')
-            ->whereStatusNotPending()
             ->latest('updated_at')
             ->get()
             ->map(function ($report) {
