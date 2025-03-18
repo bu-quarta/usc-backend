@@ -13,12 +13,17 @@ class NewsUpdate extends Model
 
     protected $fillable = [
         'title',
+        'date',
         'description',
         'image_path',
         'by',   // Added field for "Posted by" name
         'layout_by',   // Added field for "Layout by" name
         'photo_by',    // Added field for "Photo by" name
         'status'
+    ];
+
+    protected $casts = [
+        'date' => 'date',
     ];
 
     // Define the relationship with the Comment model

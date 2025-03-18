@@ -22,10 +22,10 @@ class NewsUpdateResource extends JsonResource
             'by' => explode('😊', $this->by),
             'layout_by' => $this->layout_by,
             'photo_by' => $this->photo_by,
-            'published_date' => $this->created_at->format('F j, Y'),
+            'iso' => $this->date->format('Y-m-d'),
             'image_url' => $this->image_path,
             'status' => $this->status,
-            'date_time' => $this->created_at->format('F d, Y | h:i A'),
+            'published_date' => $this->date->format('F d, Y'),
         ];
     }
 }
